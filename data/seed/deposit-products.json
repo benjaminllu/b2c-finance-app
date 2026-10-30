@@ -1,0 +1,69 @@
+[
+  {
+    "id": "sample-hysa",
+    "bankId": "sample-bank",
+    "name": "Sample High-Yield Savings",
+    "type": "savings",
+    "apyTiers": [{ "minBalanceCents": 0, "maxBalanceCents": null, "apyBps": 400 }],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "id": "sample-cd-12",
+    "bankId": "sample-bank",
+    "name": "Sample 12-Month CD",
+    "type": "cd",
+    "apyTiers": [{ "minBalanceCents": 50000, "maxBalanceCents": null, "apyBps": 425 }],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 50000,
+    "minBalanceForApyCents": 50000,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": 12,
+    "earlyWithdrawalPenaltyDays": 90,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "id": "sample-checking",
+    "bankId": "sample-bank",
+    "name": "Sample Checking",
+    "type": "checking",
+    "apyTiers": [{ "minBalanceCents": 0, "maxBalanceCents": null, "apyBps": 0 }],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 2500,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 1200,
+    "feeWaivers": [
+      {
+        "kind": "direct_deposit",
+        "thresholdCents": 50000,
+        "count": null,
+        "description": "Waived with $500+ in monthly direct deposits."
+      }
+    ],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  }
+]

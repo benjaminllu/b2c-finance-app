@@ -1,0 +1,78 @@
+[
+  {
+    "id": "sample-travel-card-60k",
+    "productType": "credit_card",
+    "institutionId": "sample-bank",
+    "cardId": "sample-travel-card",
+    "depositProductId": null,
+    "title": "Sample Travel Card: 60,000 points",
+    "bonusValue": 60000,
+    "bonusCurrencyId": "sample-points",
+    "requirements": {
+      "minSpendCents": 400000,
+      "spendWindowDays": 90,
+      "directDepositTotalCents": null,
+      "directDepositCount": null,
+      "directDepositWindowDays": null,
+      "minDepositCents": null,
+      "minBalanceCents": null,
+      "holdingPeriodDays": null,
+      "other": []
+    },
+    "monthlyFeeCents": 0,
+    "monthlyFeeWaivedByRequirements": false,
+    "eligibility": {
+      "lifetimeLimit": false,
+      "lookbackMonths": 48,
+      "lookbackScope": "product_family",
+      "notes": []
+    },
+    "eligibleStates": null,
+    "earlyClosureFeeCents": 0,
+    "earlyClosureWindowDays": null,
+    "expiresAt": null,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "id": "sample-checking-300",
+    "productType": "checking",
+    "institutionId": "sample-bank",
+    "cardId": null,
+    "depositProductId": "sample-checking",
+    "title": "Sample Checking: $300 bonus",
+    "bonusValue": 30000,
+    "bonusCurrencyId": "usd",
+    "requirements": {
+      "minSpendCents": null,
+      "spendWindowDays": null,
+      "directDepositTotalCents": 200000,
+      "directDepositCount": 1,
+      "directDepositWindowDays": 90,
+      "minDepositCents": null,
+      "minBalanceCents": null,
+      "holdingPeriodDays": 90,
+      "other": []
+    },
+    "monthlyFeeCents": 1200,
+    "monthlyFeeWaivedByRequirements": true,
+    "eligibility": {
+      "lifetimeLimit": false,
+      "lookbackMonths": 24,
+      "lookbackScope": "institution",
+      "notes": []
+    },
+    "eligibleStates": null,
+    "earlyClosureFeeCents": 2500,
+    "earlyClosureWindowDays": 180,
+    "expiresAt": "2027-03-31",
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  }
+]

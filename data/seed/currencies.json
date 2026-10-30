@@ -1,0 +1,22 @@
+[
+  {
+    "id": "usd",
+    "name": "Cash back",
+    "issuerId": null,
+    "kind": "cash",
+    "defaultCentsPerPoint": 1,
+    "valuationSource": "Cash back is worth face value.",
+    "valuationSourceUrl": null,
+    "isSample": false
+  },
+  {
+    "id": "sample-points",
+    "name": "Sample Points",
+    "issuerId": "sample-bank",
+    "kind": "points",
+    "defaultCentsPerPoint": 1.5,
+    "valuationSource": "Sample placeholder valuation, not a real estimate.",
+    "valuationSourceUrl": "https://example.com/sample-valuation",
+    "isSample": true
+  }
+]

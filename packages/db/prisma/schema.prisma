@@ -1,0 +1,173 @@
+// Mirrors the domain types in packages/core/src/types. Nested value objects (earn rules, credits,
+// APY tiers, requirements) are JSON columns validated by the core Zod schemas on read.
+// Money is integer cents, rates are integer basis points.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Issuer {
+  id         String           @id
+  name       String
+  website    String
+  isSample   Boolean          @default(false)
+  cards      CreditCard[]
+  currencies RewardCurrency[]
+}
+
+model RewardCurrency {
+  id                   String       @id
+  name                 String
+  issuerId             String?
+  issuer               Issuer?      @relation(fields: [issuerId], references: [id])
+  kind                 String // cash | points | miles
+  defaultCentsPerPoint Float
+  valuationSource      String
+  valuationSourceUrl   String?
+  isSample             Boolean      @default(false)
+  cards                CreditCard[]
+}
+
+model CreditCard {
+  id                       String         @id
+  name                     String
+  issuerId                 String
+  issuer                   Issuer         @relation(fields: [issuerId], references: [id])
+  network                  String
+  productFamily            String?
+  annualFeeCents           Int
+  firstYearFeeWaived       Boolean
+  rewardCurrencyId         String
+  rewardCurrency           RewardCurrency @relation(fields: [rewardCurrencyId], references: [id])
+  baseMultiplier           Float
+  earnRules                Json // EarnRule[]
+  credits                  Json // CardCredit[]
+  signupBonus              Json? // SignupBonus | null
+  isBusiness               Boolean
+  foreignTransactionFeeBps Int
+  sourceUrl                String
+  lastVerifiedAt           DateTime
+  isSample                 Boolean        @default(false)
+  affiliateUrl             String?
+  isAffiliate              Boolean        @default(false)
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
+
+  @@index([issuerId])
+}
+
+model Bank {
+  id                    String           @id
+  name                  String
+  kind                  String // bank | credit_union
+  insurer               String // FDIC | NCUA
+  onlineOnly            Boolean
+  membershipRequirement String?
+  website               String
+  sourceUrl             String
+  lastVerifiedAt        DateTime
+  isSample              Boolean          @default(false)
+  products              DepositProduct[]
+}
+
+model DepositProduct {
+  id                         String       @id
+  bankId                     String
+  bank                       Bank         @relation(fields: [bankId], references: [id])
+  name                       String
+  type                       String // checking | savings | money_market | cd
+  apyTiers                   Json // ApyTier[], current rate; history in RateHistory
+  tierMode                   String
+  compounding                String
+  minOpenCents               Int
+  minBalanceForApyCents      Int
+  monthlyFeeCents            Int
+  feeWaivers                 Json // FeeWaiver[]
+  cdTermMonths               Int?
+  earlyWithdrawalPenaltyDays Int?
+  sourceUrl                  String
+  lastVerifiedAt             DateTime
+  isSample                   Boolean      @default(false)
+  affiliateUrl               String?
+  isAffiliate                Boolean      @default(false)
+  createdAt                  DateTime     @default(now())
+  updatedAt                  DateTime     @updatedAt
+  rateHistory                RateHistory[]
+
+  @@index([bankId])
+  @@index([type])
+}
+
+/// Append-only: a new row each time a product's rate changes, so rate changes can be charted.
+model RateHistory {
+  id         String         @id @default(cuid())
+  productId  String
+  product    DepositProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  apyTiers   Json // ApyTier[]
+  recordedAt DateTime       @default(now())
+  source     String // admin | seed | adapter id
+
+  @@index([productId, recordedAt])
+}
+
+model BonusOffer {
+  id                             String    @id
+  productType                    String // credit_card | checking | savings | money_market
+  institutionId                  String
+  cardId                         String?
+  depositProductId               String?
+  title                          String
+  bonusValue                     Int
+  bonusCurrencyId                String
+  requirements                   Json // OfferRequirements
+  monthlyFeeCents                Int
+  monthlyFeeWaivedByRequirements Boolean
+  eligibility                    Json // OfferEligibility
+  eligibleStates                 String[] // empty = nationwide
+  earlyClosureFeeCents           Int
+  earlyClosureWindowDays         Int?
+  expiresAt                      DateTime? @db.Date
+  sourceUrl                      String
+  lastVerifiedAt                 DateTime
+  isSample                       Boolean   @default(false)
+  affiliateUrl                   String?
+  isAffiliate                    Boolean   @default(false)
+  createdAt                      DateTime  @default(now())
+  updatedAt                      DateTime  @updatedAt
+
+  @@index([productType, expiresAt])
+  @@index([institutionId])
+}
+
+model EligibilityRule {
+  id             String   @id
+  kind           String
+  name           String
+  description    String
+  appliesTo      Json // { institutionIds, productTypes }
+  params         Json // kind-specific fields
+  sourceUrl      String
+  lastVerifiedAt DateTime
+  isSample       Boolean  @default(false)
+}
+
+/// One row per DataSource adapter run.
+model IngestRun {
+  id         String    @id @default(cuid())
+  adapterId  String
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  status     String // running | succeeded | failed
+  created    Int       @default(0)
+  updated    Int       @default(0)
+  unchanged  Int       @default(0)
+  error      String?
+  log        Json?
+
+  @@index([adapterId, startedAt])
+}

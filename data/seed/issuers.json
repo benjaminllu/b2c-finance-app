@@ -1,0 +1,8 @@
+[
+  {
+    "id": "sample-bank",
+    "name": "Sample Bank",
+    "website": "https://example.com/sample-bank",
+    "isSample": true
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "sample-bank-new-accounts",
+    "kind": "max_new_accounts",
+    "name": "Sample 5/24-style rule",
+    "description": "Sample: denied if you opened 5 or more personal cards anywhere in the last 24 months.",
+    "appliesTo": { "institutionIds": ["sample-bank"], "productTypes": ["credit_card"] },
+    "count": 5,
+    "windowMonths": 24,
+    "countScope": "all_institutions",
+    "countedProductTypes": ["credit_card"],
+    "countBusiness": false,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  }
+]

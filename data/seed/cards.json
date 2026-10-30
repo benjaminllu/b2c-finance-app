@@ -1,0 +1,92 @@
+[
+  {
+    "id": "sample-cash-card",
+    "name": "Sample Cash Card",
+    "issuerId": "sample-bank",
+    "network": "visa",
+    "productFamily": null,
+    "annualFeeCents": 0,
+    "firstYearFeeWaived": false,
+    "rewardCurrencyId": "usd",
+    "baseMultiplier": 1.5,
+    "earnRules": [
+      {
+        "category": "groceries",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "credits": [],
+    "signupBonus": { "amount": 20000, "currencyId": "usd", "minSpendCents": 50000, "windowDays": 90 },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 300,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "id": "sample-travel-card",
+    "name": "Sample Travel Card",
+    "issuerId": "sample-bank",
+    "network": "visa",
+    "productFamily": "sample-travel",
+    "annualFeeCents": 9500,
+    "firstYearFeeWaived": false,
+    "rewardCurrencyId": "sample-points",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "dining",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "airfare",
+        "multiplier": 2,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "credits": [
+      {
+        "id": "sample-travel-credit",
+        "name": "Annual travel credit",
+        "annualValueCents": 5000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: any travel purchase."
+      }
+    ],
+    "signupBonus": {
+      "amount": 60000,
+      "currencyId": "sample-points",
+      "minSpendCents": 400000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  }
+]

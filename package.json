@@ -1,0 +1,32 @@
+{
+  "name": "optima",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @optima/web dev",
+    "build": "pnpm --filter @optima/web build",
+    "test": "pnpm -r --if-present test",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "format": "prettier --write .",
+    "db:up": "docker compose up -d",
+    "db:generate": "pnpm --filter @optima/db generate",
+    "db:migrate": "pnpm --filter @optima/db migrate",
+    "db:seed": "pnpm --filter @optima/db seed",
+    "seed:validate": "pnpm --filter @optima/seed validate"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "@next/eslint-plugin-next": "15.5.28",
+    "@types/node": "22",
+    "eslint": "9.39.5",
+    "eslint-plugin-react-hooks": "5.2.0",
+    "globals": "16.5.0",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.4"
+  }
+}

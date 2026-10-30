@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sample-bank",
+    "name": "Sample Bank",
+    "kind": "bank",
+    "insurer": "FDIC",
+    "onlineOnly": true,
+    "membershipRequirement": null,
+    "website": "https://example.com/sample-bank",
+    "sourceUrl": "https://example.com/sample",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  }
+]
