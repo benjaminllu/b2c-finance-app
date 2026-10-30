@@ -1,10 +1,16 @@
 [
   {
-    "id": "sample-hysa",
-    "bankId": "sample-bank",
-    "name": "Sample High-Yield Savings",
+    "id": "ally-online-savings",
+    "bankId": "ally",
+    "name": "Ally Online Savings",
     "type": "savings",
-    "apyTiers": [{ "minBalanceCents": 0, "maxBalanceCents": null, "apyBps": 400 }],
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 380
+      }
+    ],
     "tierMode": "whole_balance",
     "compounding": "daily",
     "minOpenCents": 0,
@@ -13,18 +19,474 @@
     "feeWaivers": [],
     "cdTermMonths": null,
     "earlyWithdrawalPenaltyDays": null,
-    "sourceUrl": "https://example.com/sample",
-    "lastVerifiedAt": "2026-10-30T00:00:00Z",
-    "isSample": true,
     "affiliateUrl": null,
-    "isAffiliate": false
+    "isAffiliate": false,
+    "sourceUrl": "https://www.ally.com/bank/online-savings-account/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
   },
   {
-    "id": "sample-cd-12",
-    "bankId": "sample-bank",
-    "name": "Sample 12-Month CD",
+    "id": "marcus-online-savings",
+    "bankId": "marcus",
+    "name": "Marcus Online Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 400
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.marcus.com/us/en/savings/high-yield-savings",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "discover-online-savings",
+    "bankId": "discover",
+    "name": "Discover Online Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 385
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.discover.com/online-banking/savings-account/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "capital-one-360-performance-savings",
+    "bankId": "capital-one",
+    "name": "360 Performance Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 370
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.capitalone.com/bank/savings-accounts/online-savings-account/",
+    "lastVerifiedAt": "2026-10-01T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "synchrony-high-yield-savings",
+    "bankId": "synchrony",
+    "name": "Synchrony High Yield Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 375
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.synchronybank.com/banking/high-yield-savings/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "amex-high-yield-savings",
+    "bankId": "amex",
+    "name": "American Express High Yield Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 365
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.americanexpress.com/en-us/banking/online-savings/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "barclays-tiered-savings",
+    "bankId": "barclays",
+    "name": "Barclays Tiered Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": 999999,
+        "apyBps": 350
+      },
+      {
+        "minBalanceCents": 1000000,
+        "maxBalanceCents": null,
+        "apyBps": 410
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.banking.barclaysus.com/online-savings.html",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "alliant-high-rate-savings",
+    "bankId": "alliant",
+    "name": "Alliant High-Rate Savings",
+    "type": "savings",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": 1000000,
+        "apyBps": 300
+      },
+      {
+        "minBalanceCents": 1000001,
+        "maxBalanceCents": null,
+        "apyBps": 330
+      }
+    ],
+    "tierMode": "blended",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.alliantcreditunion.org/bank/high-rate-savings",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "ally-money-market",
+    "bankId": "ally",
+    "name": "Ally Money Market Account",
+    "type": "money_market",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 350
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.ally.com/bank/money-market-account/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "penfed-money-market",
+    "bankId": "penfed",
+    "name": "PenFed Premium Online Money Market",
+    "type": "money_market",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": 2499999,
+        "apyBps": 200
+      },
+      {
+        "minBalanceCents": 2500000,
+        "maxBalanceCents": null,
+        "apyBps": 310
+      }
+    ],
+    "tierMode": "blended",
+    "compounding": "daily",
+    "minOpenCents": 500,
+    "minBalanceForApyCents": 500,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.penfed.org/money-market",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "chase-total-checking",
+    "bankId": "chase",
+    "name": "Chase Total Checking",
+    "type": "checking",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 0
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 1200,
+    "feeWaivers": [
+      {
+        "kind": "direct_deposit",
+        "thresholdCents": 50000,
+        "count": null,
+        "description": "Sample: waived with $500+ in monthly electronic deposits."
+      },
+      {
+        "kind": "min_daily_balance",
+        "thresholdCents": 150000,
+        "count": null,
+        "description": "Sample: or a $1,500 minimum daily balance."
+      }
+    ],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.chase.com/personal/checking/total-checking",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "bank-of-america-advantage-plus",
+    "bankId": "bank-of-america",
+    "name": "Advantage Plus Banking",
+    "type": "checking",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 0
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 1295,
+    "feeWaivers": [
+      {
+        "kind": "direct_deposit",
+        "thresholdCents": 25000,
+        "count": null,
+        "description": "Sample: waived with $250+ in monthly direct deposits."
+      },
+      {
+        "kind": "min_daily_balance",
+        "thresholdCents": 150000,
+        "count": null,
+        "description": "Sample: or a $1,500 minimum daily balance."
+      },
+      {
+        "kind": "age_under",
+        "thresholdCents": null,
+        "count": 24,
+        "description": "Sample: waived for account holders under 24."
+      }
+    ],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.bankofamerica.com/deposits/checking/advantage-plus-banking/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "wells-fargo-everyday-checking",
+    "bankId": "wells-fargo",
+    "name": "Everyday Checking",
+    "type": "checking",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 1
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 1000,
+    "feeWaivers": [
+      {
+        "kind": "direct_deposit",
+        "thresholdCents": 50000,
+        "count": null,
+        "description": "Sample: waived with $500+ in qualifying direct deposits."
+      },
+      {
+        "kind": "min_daily_balance",
+        "thresholdCents": 50000,
+        "count": null,
+        "description": "Sample: or a $500 minimum daily balance."
+      }
+    ],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.wellsfargo.com/checking/everyday/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "capital-one-360-checking",
+    "bankId": "capital-one",
+    "name": "360 Checking",
+    "type": "checking",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 10
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.capitalone.com/bank/checking-accounts/online-checking-account/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "sofi-checking",
+    "bankId": "sofi",
+    "name": "SoFi Checking and Savings",
+    "type": "checking",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 50
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.sofi.com/banking/",
+    "lastVerifiedAt": "2026-10-01T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "discover-cashback-checking",
+    "bankId": "discover",
+    "name": "Discover Cashback Debit Checking",
+    "type": "checking",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 0
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "monthly",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": null,
+    "earlyWithdrawalPenaltyDays": null,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.discover.com/online-banking/checking-account/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "marcus-cd-12",
+    "bankId": "marcus",
+    "name": "Marcus 12-Month CD",
     "type": "cd",
-    "apyTiers": [{ "minBalanceCents": 50000, "maxBalanceCents": null, "apyBps": 425 }],
+    "apyTiers": [
+      {
+        "minBalanceCents": 50000,
+        "maxBalanceCents": null,
+        "apyBps": 420
+      }
+    ],
     "tierMode": "whole_balance",
     "compounding": "daily",
     "minOpenCents": 50000,
@@ -33,37 +495,88 @@
     "feeWaivers": [],
     "cdTermMonths": 12,
     "earlyWithdrawalPenaltyDays": 90,
-    "sourceUrl": "https://example.com/sample",
-    "lastVerifiedAt": "2026-10-30T00:00:00Z",
-    "isSample": true,
     "affiliateUrl": null,
-    "isAffiliate": false
+    "isAffiliate": false,
+    "sourceUrl": "https://www.marcus.com/us/en/savings/certificates-of-deposit",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
   },
   {
-    "id": "sample-checking",
-    "bankId": "sample-bank",
-    "name": "Sample Checking",
-    "type": "checking",
-    "apyTiers": [{ "minBalanceCents": 0, "maxBalanceCents": null, "apyBps": 0 }],
-    "tierMode": "whole_balance",
-    "compounding": "monthly",
-    "minOpenCents": 2500,
-    "minBalanceForApyCents": 0,
-    "monthlyFeeCents": 1200,
-    "feeWaivers": [
+    "id": "ally-cd-12",
+    "bankId": "ally",
+    "name": "Ally 12-Month CD",
+    "type": "cd",
+    "apyTiers": [
       {
-        "kind": "direct_deposit",
-        "thresholdCents": 50000,
-        "count": null,
-        "description": "Waived with $500+ in monthly direct deposits."
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 410
       }
     ],
-    "cdTermMonths": null,
-    "earlyWithdrawalPenaltyDays": null,
-    "sourceUrl": "https://example.com/sample",
-    "lastVerifiedAt": "2026-10-30T00:00:00Z",
-    "isSample": true,
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": 12,
+    "earlyWithdrawalPenaltyDays": 60,
     "affiliateUrl": null,
-    "isAffiliate": false
+    "isAffiliate": false,
+    "sourceUrl": "https://www.ally.com/bank/certificate-of-deposit/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "ally-cd-60",
+    "bankId": "ally",
+    "name": "Ally 60-Month CD",
+    "type": "cd",
+    "apyTiers": [
+      {
+        "minBalanceCents": 0,
+        "maxBalanceCents": null,
+        "apyBps": 380
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 0,
+    "minBalanceForApyCents": 0,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": 60,
+    "earlyWithdrawalPenaltyDays": 150,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.ally.com/bank/certificate-of-deposit/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "penfed-cd-12",
+    "bankId": "penfed",
+    "name": "PenFed 12-Month Certificate",
+    "type": "cd",
+    "apyTiers": [
+      {
+        "minBalanceCents": 100000,
+        "maxBalanceCents": null,
+        "apyBps": 415
+      }
+    ],
+    "tierMode": "whole_balance",
+    "compounding": "daily",
+    "minOpenCents": 100000,
+    "minBalanceForApyCents": 100000,
+    "monthlyFeeCents": 0,
+    "feeWaivers": [],
+    "cdTermMonths": 12,
+    "earlyWithdrawalPenaltyDays": 180,
+    "affiliateUrl": null,
+    "isAffiliate": false,
+    "sourceUrl": "https://www.penfed.org/certificates",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true
   }
 ]

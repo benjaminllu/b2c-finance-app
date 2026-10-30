@@ -10,13 +10,63 @@
     "isSample": false
   },
   {
-    "id": "sample-points",
-    "name": "Sample Points",
-    "issuerId": "sample-bank",
+    "id": "chase-ur",
+    "name": "Chase Ultimate Rewards",
+    "issuerId": "chase",
     "kind": "points",
-    "defaultCentsPerPoint": 1.5,
-    "valuationSource": "Sample placeholder valuation, not a real estimate.",
-    "valuationSourceUrl": "https://example.com/sample-valuation",
+    "defaultCentsPerPoint": 1.25,
+    "valuationSource": "Sample placeholder valuation, not a verified estimate.",
+    "valuationSourceUrl": null,
+    "isSample": true
+  },
+  {
+    "id": "amex-mr",
+    "name": "Amex Membership Rewards",
+    "issuerId": "amex",
+    "kind": "points",
+    "defaultCentsPerPoint": 1,
+    "valuationSource": "Sample placeholder valuation, not a verified estimate.",
+    "valuationSourceUrl": null,
+    "isSample": true
+  },
+  {
+    "id": "citi-typ",
+    "name": "Citi ThankYou Points",
+    "issuerId": "citi",
+    "kind": "points",
+    "defaultCentsPerPoint": 1,
+    "valuationSource": "Sample placeholder valuation, not a verified estimate.",
+    "valuationSourceUrl": null,
+    "isSample": true
+  },
+  {
+    "id": "capital-one-miles",
+    "name": "Capital One Miles",
+    "issuerId": "capital-one",
+    "kind": "miles",
+    "defaultCentsPerPoint": 1,
+    "valuationSource": "Sample placeholder valuation, not a verified estimate.",
+    "valuationSourceUrl": null,
+    "isSample": true
+  },
+  {
+    "id": "delta-skymiles",
+    "name": "Delta SkyMiles",
+    "issuerId": null,
+    "kind": "miles",
+    "defaultCentsPerPoint": 1.2,
+    "valuationSource": "Sample placeholder valuation, not a verified estimate.",
+    "valuationSourceUrl": null,
+    "isSample": true
+  },
+  {
+    "id": "marriott-bonvoy",
+    "name": "Marriott Bonvoy Points",
+    "issuerId": null,
+    "kind": "points",
+    "defaultCentsPerPoint": 0.8,
+    "valuationSource": "Sample placeholder valuation, not a verified estimate.",
+    "valuationSourceUrl": null,
     "isSample": true
   }
 ]

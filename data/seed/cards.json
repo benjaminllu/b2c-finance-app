@@ -1,20 +1,219 @@
 [
   {
-    "id": "sample-cash-card",
-    "name": "Sample Cash Card",
-    "issuerId": "sample-bank",
-    "network": "visa",
     "productFamily": null,
-    "annualFeeCents": 0,
     "firstYearFeeWaived": false,
+    "credits": [],
+    "signupBonus": null,
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 300,
+    "id": "citi-double-cash",
+    "name": "Citi Double Cash",
+    "issuerId": "citi",
+    "network": "mastercard",
+    "annualFeeCents": 0,
     "rewardCurrencyId": "usd",
-    "baseMultiplier": 1.5,
+    "baseMultiplier": 2,
+    "earnRules": [],
+    "sourceUrl": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": null,
+    "firstYearFeeWaived": false,
+    "credits": [],
+    "signupBonus": {
+      "amount": 20000,
+      "currencyId": "usd",
+      "minSpendCents": 50000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 300,
+    "id": "wells-fargo-active-cash",
+    "name": "Wells Fargo Active Cash",
+    "issuerId": "wells-fargo",
+    "network": "visa",
+    "annualFeeCents": 0,
+    "rewardCurrencyId": "usd",
+    "baseMultiplier": 2,
+    "earnRules": [],
+    "sourceUrl": "https://www.wellsfargo.com/credit-cards/active-cash/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": null,
+    "firstYearFeeWaived": false,
+    "credits": [],
+    "signupBonus": null,
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "discover-it-cash-back",
+    "name": "Discover it Cash Back",
+    "issuerId": "discover",
+    "network": "discover",
+    "annualFeeCents": 0,
+    "rewardCurrencyId": "usd",
+    "baseMultiplier": 1,
     "earnRules": [
       {
         "category": "groceries",
-        "multiplier": 3,
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q1",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [1],
+        "portalOnly": false
+      },
+      {
+        "category": "drugstores",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q1",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [1],
+        "portalOnly": false
+      },
+      {
+        "category": "gas",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q2",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [2],
+        "portalOnly": false
+      },
+      {
+        "category": "transit",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q2",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [2],
+        "portalOnly": false
+      },
+      {
+        "category": "dining",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q3",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [3],
+        "portalOnly": false
+      },
+      {
+        "category": "streaming",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q3",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [3],
+        "portalOnly": false
+      },
+      {
+        "category": "online_retail",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q4",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [4],
+        "portalOnly": false
+      },
+      {
+        "category": "utilities",
+        "multiplier": 5,
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly",
+        "capGroup": "rotating-q4",
+        "afterCapMultiplier": null,
+        "rotating": true,
+        "activeQuarters": [4],
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://www.discover.com/credit-cards/cash-back/it-card.html",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "blue-cash",
+    "firstYearFeeWaived": true,
+    "credits": [],
+    "signupBonus": {
+      "amount": 25000,
+      "currencyId": "usd",
+      "minSpendCents": 300000,
+      "windowDays": 180
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 270,
+    "id": "amex-blue-cash-preferred",
+    "name": "Blue Cash Preferred",
+    "issuerId": "amex",
+    "network": "amex",
+    "annualFeeCents": 9500,
+    "rewardCurrencyId": "usd",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "groceries",
+        "multiplier": 6,
         "capAmountCents": 600000,
         "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "streaming",
+        "multiplier": 6,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "transit",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "gas",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
         "capGroup": null,
         "afterCapMultiplier": null,
         "rotating": false,
@@ -22,30 +221,297 @@
         "portalOnly": false
       }
     ],
-    "credits": [],
-    "signupBonus": { "amount": 20000, "currencyId": "usd", "minSpendCents": 50000, "windowDays": 90 },
-    "isBusiness": false,
-    "foreignTransactionFeeBps": 300,
-    "sourceUrl": "https://example.com/sample",
+    "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
     "affiliateUrl": null,
     "isAffiliate": false
   },
   {
-    "id": "sample-travel-card",
-    "name": "Sample Travel Card",
-    "issuerId": "sample-bank",
-    "network": "visa",
-    "productFamily": "sample-travel",
-    "annualFeeCents": 9500,
+    "productFamily": "blue-cash",
     "firstYearFeeWaived": false,
-    "rewardCurrencyId": "sample-points",
+    "credits": [],
+    "signupBonus": {
+      "amount": 20000,
+      "currencyId": "usd",
+      "minSpendCents": 200000,
+      "windowDays": 180
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 270,
+    "id": "amex-blue-cash-everyday",
+    "name": "Blue Cash Everyday",
+    "issuerId": "amex",
+    "network": "amex",
+    "annualFeeCents": 0,
+    "rewardCurrencyId": "usd",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "groceries",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "gas",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "online_retail",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "freedom",
+    "firstYearFeeWaived": false,
+    "credits": [],
+    "signupBonus": {
+      "amount": 20000,
+      "currencyId": "usd",
+      "minSpendCents": 50000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 300,
+    "id": "chase-freedom-unlimited",
+    "name": "Chase Freedom Unlimited",
+    "issuerId": "chase",
+    "network": "visa",
+    "annualFeeCents": 0,
+    "rewardCurrencyId": "chase-ur",
+    "baseMultiplier": 1.5,
+    "earnRules": [
+      {
+        "category": "dining",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "drugstores",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "travel",
+        "multiplier": 5,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": true
+      }
+    ],
+    "sourceUrl": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": null,
+    "firstYearFeeWaived": false,
+    "credits": [
+      {
+        "id": "strata-hotel-credit",
+        "name": "Annual hotel savings benefit",
+        "annualValueCents": 10000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: $100 off a $500+ hotel stay booked via the issuer portal."
+      }
+    ],
+    "signupBonus": {
+      "amount": 60000,
+      "currencyId": "citi-typ",
+      "minSpendCents": 400000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "citi-strata-premier",
+    "name": "Citi Strata Premier",
+    "issuerId": "citi",
+    "network": "mastercard",
+    "annualFeeCents": 9500,
+    "rewardCurrencyId": "citi-typ",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "groceries",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "dining",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "gas",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "airfare",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "hotels",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "transit",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "sapphire",
+    "firstYearFeeWaived": false,
+    "credits": [
+      {
+        "id": "csp-hotel-credit",
+        "name": "Annual hotel credit",
+        "annualValueCents": 5000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: hotel stays booked through the issuer portal."
+      }
+    ],
+    "signupBonus": {
+      "amount": 75000,
+      "currencyId": "chase-ur",
+      "minSpendCents": 500000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "chase-sapphire-preferred",
+    "name": "Chase Sapphire Preferred",
+    "issuerId": "chase",
+    "network": "visa",
+    "annualFeeCents": 9500,
+    "rewardCurrencyId": "chase-ur",
     "baseMultiplier": 1,
     "earnRules": [
       {
         "category": "dining",
         "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "streaming",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "groceries",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "travel",
+        "multiplier": 2,
         "capAmountCents": null,
         "capPeriod": null,
         "capGroup": null,
@@ -64,26 +530,594 @@
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
+      },
+      {
+        "category": "hotels",
+        "multiplier": 2,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "transit",
+        "multiplier": 2,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
       }
     ],
+    "sourceUrl": "https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "sapphire",
+    "firstYearFeeWaived": false,
     "credits": [
       {
-        "id": "sample-travel-credit",
+        "id": "csr-travel-credit",
         "name": "Annual travel credit",
-        "annualValueCents": 5000,
+        "annualValueCents": 30000,
         "frequency": "annual",
-        "usageConstraints": "Sample: any travel purchase."
+        "usageConstraints": "Sample: automatically applied to travel purchases."
+      },
+      {
+        "id": "csr-dining-credit",
+        "name": "Dining credit",
+        "annualValueCents": 15000,
+        "frequency": "semiannual",
+        "usageConstraints": "Sample: select restaurants; enrollment may be required."
+      },
+      {
+        "id": "csr-entry-credit",
+        "name": "Global Entry / TSA PreCheck credit",
+        "annualValueCents": 2000,
+        "frequency": "multi_year",
+        "usageConstraints": "Sample: once every four years, annualized."
+      },
+      {
+        "id": "csr-doordash",
+        "name": "DoorDash credits",
+        "annualValueCents": 12000,
+        "frequency": "monthly",
+        "usageConstraints": "Sample: DoorDash only; activation required."
       }
     ],
     "signupBonus": {
       "amount": 60000,
-      "currencyId": "sample-points",
+      "currencyId": "chase-ur",
+      "minSpendCents": 500000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "chase-sapphire-reserve",
+    "name": "Chase Sapphire Reserve",
+    "issuerId": "chase",
+    "network": "visa",
+    "annualFeeCents": 55000,
+    "rewardCurrencyId": "chase-ur",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "dining",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "travel",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "airfare",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "hotels",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "transit",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "platinum",
+    "firstYearFeeWaived": false,
+    "credits": [
+      {
+        "id": "plat-airline-credit",
+        "name": "Airline fee credit",
+        "annualValueCents": 20000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: incidental fees on one selected airline."
+      },
+      {
+        "id": "plat-hotel-credit",
+        "name": "Hotel credit",
+        "annualValueCents": 20000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: select prepaid hotel bookings."
+      },
+      {
+        "id": "plat-digital-credit",
+        "name": "Digital entertainment credit",
+        "annualValueCents": 24000,
+        "frequency": "monthly",
+        "usageConstraints": "Sample: select streaming services; enrollment required."
+      },
+      {
+        "id": "plat-uber-credit",
+        "name": "Uber Cash",
+        "annualValueCents": 20000,
+        "frequency": "monthly",
+        "usageConstraints": "Sample: US Uber rides and eats."
+      },
+      {
+        "id": "plat-saks-credit",
+        "name": "Saks Fifth Avenue credit",
+        "annualValueCents": 10000,
+        "frequency": "semiannual",
+        "usageConstraints": "Sample: enrollment required."
+      },
+      {
+        "id": "plat-clear-credit",
+        "name": "CLEAR Plus credit",
+        "annualValueCents": 18900,
+        "frequency": "annual",
+        "usageConstraints": "Sample: CLEAR membership only."
+      },
+      {
+        "id": "plat-walmart-credit",
+        "name": "Walmart+ credit",
+        "annualValueCents": 15500,
+        "frequency": "monthly",
+        "usageConstraints": "Sample: membership reimbursement."
+      }
+    ],
+    "signupBonus": {
+      "amount": 80000,
+      "currencyId": "amex-mr",
+      "minSpendCents": 800000,
+      "windowDays": 180
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "amex-platinum",
+    "name": "The Platinum Card from American Express",
+    "issuerId": "amex",
+    "network": "amex",
+    "annualFeeCents": 69500,
+    "rewardCurrencyId": "amex-mr",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "airfare",
+        "multiplier": 5,
+        "capAmountCents": 50000000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "hotels",
+        "multiplier": 5,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": true
+      }
+    ],
+    "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": null,
+    "firstYearFeeWaived": false,
+    "credits": [
+      {
+        "id": "vx-travel-credit",
+        "name": "Capital One Travel credit",
+        "annualValueCents": 30000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: bookings through the issuer portal."
+      },
+      {
+        "id": "vx-anniversary",
+        "name": "Anniversary bonus miles",
+        "annualValueCents": 10000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: 10,000 miles valued at 1 cent each."
+      }
+    ],
+    "signupBonus": {
+      "amount": 75000,
+      "currencyId": "capital-one-miles",
       "minSpendCents": 400000,
       "windowDays": 90
     },
     "isBusiness": false,
     "foreignTransactionFeeBps": 0,
-    "sourceUrl": "https://example.com/sample",
+    "id": "capital-one-venture-x",
+    "name": "Capital One Venture X",
+    "issuerId": "capital-one",
+    "network": "visa",
+    "annualFeeCents": 39500,
+    "rewardCurrencyId": "capital-one-miles",
+    "baseMultiplier": 2,
+    "earnRules": [
+      {
+        "category": "hotels",
+        "multiplier": 10,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": true
+      },
+      {
+        "category": "airfare",
+        "multiplier": 5,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": true
+      }
+    ],
+    "sourceUrl": "https://www.capitalone.com/credit-cards/venture-x/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "delta-skymiles",
+    "firstYearFeeWaived": true,
+    "credits": [
+      {
+        "id": "delta-stays",
+        "name": "Delta Stays credit",
+        "annualValueCents": 10000,
+        "frequency": "annual",
+        "usageConstraints": "Sample: prepaid Delta Stays bookings."
+      }
+    ],
+    "signupBonus": {
+      "amount": 70000,
+      "currencyId": "delta-skymiles",
+      "minSpendCents": 200000,
+      "windowDays": 180
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 270,
+    "id": "delta-skymiles-gold-amex",
+    "name": "Delta SkyMiles Gold American Express",
+    "issuerId": "amex",
+    "network": "amex",
+    "annualFeeCents": 15000,
+    "rewardCurrencyId": "delta-skymiles",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "airfare",
+        "multiplier": 2,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "dining",
+        "multiplier": 2,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "groceries",
+        "multiplier": 2,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/delta-skymiles-gold-american-express-card/",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "bonvoy",
+    "firstYearFeeWaived": false,
+    "credits": [
+      {
+        "id": "bonvoy-free-night",
+        "name": "Annual free night award",
+        "annualValueCents": 24500,
+        "frequency": "annual",
+        "usageConstraints": "Sample: 35,000-point award valued at 0.7 cents per point."
+      }
+    ],
+    "signupBonus": {
+      "amount": 100000,
+      "currencyId": "marriott-bonvoy",
+      "minSpendCents": 300000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "marriott-bonvoy-boundless",
+    "name": "Marriott Bonvoy Boundless",
+    "issuerId": "chase",
+    "network": "visa",
+    "annualFeeCents": 9500,
+    "rewardCurrencyId": "marriott-bonvoy",
+    "baseMultiplier": 2,
+    "earnRules": [
+      {
+        "category": "hotels",
+        "multiplier": 6,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "groceries",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 2,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "gas",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 2,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "dining",
+        "multiplier": 3,
+        "capAmountCents": 600000,
+        "capPeriod": "annual",
+        "capGroup": null,
+        "afterCapMultiplier": 2,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://creditcards.chase.com/travel-credit-cards/marriott-bonvoy/boundless",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": null,
+    "firstYearFeeWaived": false,
+    "credits": [],
+    "signupBonus": {
+      "amount": 20000,
+      "currencyId": "usd",
+      "minSpendCents": 50000,
+      "windowDays": 90
+    },
+    "isBusiness": false,
+    "foreignTransactionFeeBps": 0,
+    "id": "capital-one-savor",
+    "name": "Capital One Savor Cash Rewards",
+    "issuerId": "capital-one",
+    "network": "mastercard",
+    "annualFeeCents": 0,
+    "rewardCurrencyId": "usd",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "dining",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "streaming",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "groceries",
+        "multiplier": 3,
+        "capAmountCents": null,
+        "capPeriod": null,
+        "capGroup": null,
+        "afterCapMultiplier": null,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://www.capitalone.com/credit-cards/savor-dining-rewards/",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true,
+    "affiliateUrl": null,
+    "isAffiliate": false
+  },
+  {
+    "productFamily": "ink",
+    "firstYearFeeWaived": false,
+    "credits": [],
+    "signupBonus": {
+      "amount": 100000,
+      "currencyId": "chase-ur",
+      "minSpendCents": 800000,
+      "windowDays": 90
+    },
+    "isBusiness": true,
+    "foreignTransactionFeeBps": 0,
+    "id": "chase-ink-business-preferred",
+    "name": "Chase Ink Business Preferred",
+    "issuerId": "chase",
+    "network": "visa",
+    "annualFeeCents": 9500,
+    "rewardCurrencyId": "chase-ur",
+    "baseMultiplier": 1,
+    "earnRules": [
+      {
+        "category": "travel",
+        "multiplier": 3,
+        "capAmountCents": 15000000,
+        "capPeriod": "annual",
+        "capGroup": "ink-bonus",
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "airfare",
+        "multiplier": 3,
+        "capAmountCents": 15000000,
+        "capPeriod": "annual",
+        "capGroup": "ink-bonus",
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "hotels",
+        "multiplier": 3,
+        "capAmountCents": 15000000,
+        "capPeriod": "annual",
+        "capGroup": "ink-bonus",
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "transit",
+        "multiplier": 3,
+        "capAmountCents": 15000000,
+        "capPeriod": "annual",
+        "capGroup": "ink-bonus",
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      },
+      {
+        "category": "utilities",
+        "multiplier": 3,
+        "capAmountCents": 15000000,
+        "capPeriod": "annual",
+        "capGroup": "ink-bonus",
+        "afterCapMultiplier": 1,
+        "rotating": false,
+        "activeQuarters": null,
+        "portalOnly": false
+      }
+    ],
+    "sourceUrl": "https://creditcards.chase.com/business-credit-cards/ink/business-preferred",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
     "affiliateUrl": null,

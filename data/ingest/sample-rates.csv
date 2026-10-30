@@ -1,0 +1,8 @@
+# SAMPLE DATA: invented placeholder rates for exercising the ingest pipeline. Not real, not verified.
+# Columns: one row per APY tier. Leave max_balance_usd empty for the top tier.
+product_id,min_balance_usd,max_balance_usd,apy_percent,as_of
+marcus-online-savings,0,,4.05,2026-10-30
+ally-online-savings,0,,3.80,2026-10-30
+barclays-tiered-savings,0,9999.99,3.45,2026-10-30
+barclays-tiered-savings,10000,,4.10,2026-10-30
+ally-cd-12,0,,4.00,2026-10-30

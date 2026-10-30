@@ -1,8 +1,38 @@
 [
   {
-    "id": "sample-bank",
-    "name": "Sample Bank",
-    "website": "https://example.com/sample-bank",
+    "id": "chase",
+    "name": "Chase",
+    "website": "https://www.chase.com",
+    "isSample": true
+  },
+  {
+    "id": "amex",
+    "name": "American Express",
+    "website": "https://www.americanexpress.com",
+    "isSample": true
+  },
+  {
+    "id": "citi",
+    "name": "Citi",
+    "website": "https://www.citi.com",
+    "isSample": true
+  },
+  {
+    "id": "capital-one",
+    "name": "Capital One",
+    "website": "https://www.capitalone.com",
+    "isSample": true
+  },
+  {
+    "id": "discover",
+    "name": "Discover",
+    "website": "https://www.discover.com",
+    "isSample": true
+  },
+  {
+    "id": "wells-fargo",
+    "name": "Wells Fargo",
+    "website": "https://www.wellsfargo.com",
     "isSample": true
   }
 ]

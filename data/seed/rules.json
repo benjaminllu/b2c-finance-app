@@ -1,16 +1,221 @@
 [
   {
-    "id": "sample-bank-new-accounts",
+    "id": "chase-5-24",
     "kind": "max_new_accounts",
-    "name": "Sample 5/24-style rule",
-    "description": "Sample: denied if you opened 5 or more personal cards anywhere in the last 24 months.",
-    "appliesTo": { "institutionIds": ["sample-bank"], "productTypes": ["credit_card"] },
     "count": 5,
     "windowMonths": 24,
     "countScope": "all_institutions",
     "countedProductTypes": ["credit_card"],
     "countBusiness": false,
-    "sourceUrl": "https://example.com/sample",
+    "name": "Chase 5/24",
+    "description": "Denied if 5 or more personal cards were opened at any issuer in the last 24 months; business cards are not counted. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["chase"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/chase-5-24",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "amex-2-in-90",
+    "kind": "max_new_accounts",
+    "count": 2,
+    "windowMonths": 3,
+    "countScope": "same_institution",
+    "countedProductTypes": ["credit_card"],
+    "countBusiness": true,
+    "name": "Amex 2 cards in 90 days",
+    "description": "At most 2 new Amex credit cards approved per 90 days (modelled as 3 months). Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["amex"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/amex-2-in-90",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "citi-2-in-65",
+    "kind": "max_new_accounts",
+    "count": 2,
+    "windowMonths": 2,
+    "countScope": "same_institution",
+    "countedProductTypes": ["credit_card"],
+    "countBusiness": false,
+    "name": "Citi 2 cards in 65 days",
+    "description": "At most 2 new Citi cards approved per 65 days (modelled as 2 months). Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["citi"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/citi-2-in-65",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "citi-1-in-8",
+    "kind": "min_days_between_apps",
+    "days": 8,
+    "name": "Citi 1 application per 8 days",
+    "description": "One Citi card application every 8 days. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["citi"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/citi-1-in-8",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "capital-one-1-in-180",
+    "kind": "min_days_between_apps",
+    "days": 180,
+    "name": "Capital One 1 application per 6 months",
+    "description": "One Capital One card application roughly every 6 months. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["capital-one"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/capital-one-1-in-180",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "amex-lifetime-bonus",
+    "kind": "lifetime_bonus",
+    "productScope": "product_family",
+    "name": "Amex once-per-lifetime bonus",
+    "description": "Welcome offer once per card family per lifetime. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["amex"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/amex-lifetime-bonus",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "chase-sapphire-48",
+    "kind": "bonus_lookback",
+    "months": 48,
+    "productScope": "product_family",
+    "measureFrom": "bonus_received",
+    "name": "Sapphire 48-month lookback",
+    "description": "No Sapphire welcome bonus if one was received within 48 months. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["chase"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/chase-sapphire-48",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "chase-card-bonus-24",
+    "kind": "bonus_lookback",
+    "months": 24,
+    "productScope": "product",
+    "measureFrom": "bonus_received",
+    "name": "Chase 24-month bonus lookback",
+    "description": "No repeat bonus on the same card within 24 months. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["chase"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/chase-card-bonus-24",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "amex-max-open-10",
+    "kind": "max_open_accounts",
+    "count": 10,
+    "name": "Amex open credit card limit",
+    "description": "Maximum number of open Amex credit cards. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["amex"],
+      "productTypes": ["credit_card"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/amex-max-open-10",
+    "lastVerifiedAt": "2026-08-15T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "chase-checking-bonus-24",
+    "kind": "bonus_lookback",
+    "months": 24,
+    "productScope": "institution",
+    "measureFrom": "bonus_received",
+    "name": "Chase checking bonus once per 24 months",
+    "description": "One checking bonus per 24 months. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["chase"],
+      "productTypes": ["checking"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/chase-checking-bonus-24",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "wells-fargo-checking-bonus-12",
+    "kind": "bonus_lookback",
+    "months": 12,
+    "productScope": "institution",
+    "measureFrom": "account_closed",
+    "name": "Wells Fargo checking bonus after 12 months closed",
+    "description": "Not eligible within 12 months of closing a checking account. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["wells-fargo"],
+      "productTypes": ["checking"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/wells-fargo-checking-bonus-12",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "bank-of-america-checking-bonus-12",
+    "kind": "bonus_lookback",
+    "months": 12,
+    "productScope": "institution",
+    "measureFrom": "bonus_received",
+    "name": "Bank of America checking bonus per 12 months",
+    "description": "One checking bonus per 12 months. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["bank-of-america"],
+      "productTypes": ["checking"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/bank-of-america-checking-bonus-12",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "marcus-savings-lifetime",
+    "kind": "lifetime_bonus",
+    "productScope": "product",
+    "name": "Marcus savings bonus once per lifetime",
+    "description": "Savings bonus once per customer. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["marcus"],
+      "productTypes": ["savings"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/marcus-savings-lifetime",
+    "lastVerifiedAt": "2026-10-30T00:00:00Z",
+    "isSample": true
+  },
+  {
+    "id": "sofi-checking-bonus-12",
+    "kind": "bonus_lookback",
+    "months": 12,
+    "productScope": "institution",
+    "measureFrom": "account_opened",
+    "name": "SoFi bonus lookback",
+    "description": "No new SoFi bonus within 12 months of the last. Sample: must be verified against the issuer's current terms before use.",
+    "appliesTo": {
+      "institutionIds": ["sofi"],
+      "productTypes": ["checking", "savings"]
+    },
+    "sourceUrl": "https://example.com/sample/rules/sofi-checking-bonus-12",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true
   }
