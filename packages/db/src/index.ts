@@ -24,3 +24,4 @@ export * from "./prisma-store";
 export * from "./seed-logic";
 export * from "./ingest-runner";
 export * from "./adapters";
+export * from "./offers-admin";

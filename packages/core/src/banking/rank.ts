@@ -43,6 +43,14 @@ export function rankCashOptions(input: {
       { principalCents: amountCents, horizonDays, metWaivers },
     ),
   }));
+  // Bonus ranking assumes cash above the bonus's requirement sits in the best feasible savings/MM account.
+  const sweep =
+    all
+      .filter(
+        (o) => o.result.feasible && (o.product?.type === "savings" || o.product?.type === "money_market"),
+      )
+      .sort((a, b) => b.result.netEarningsCents - a.result.netEarningsCents || a.id.localeCompare(b.id))[0]
+      ?.product ?? null;
   for (const offer of input.offers) {
     if (offer.productType === "credit_card") continue;
     const product = offer.depositProductId ? (byId.get(offer.depositProductId) ?? null) : null;
@@ -54,7 +62,10 @@ export function rankCashOptions(input: {
       offer,
       result: expired
         ? infeasibleResult(`This offer expired on ${offer.expiresAt}.`)
-        : effectiveApy({ kind: "bonus", offer, product }, { principalCents: amountCents, horizonDays }),
+        : effectiveApy(
+            { kind: "bonus", offer, product },
+            { principalCents: amountCents, horizonDays, excessCashProduct: sweep },
+          ),
     });
   }
   const apy = (o: RankedOption) => o.result.effectiveApyBps ?? -1;

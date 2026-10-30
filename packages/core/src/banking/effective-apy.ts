@@ -9,6 +9,8 @@ export interface EffectiveApyInput {
   principalCents: number;
   horizonDays: number;
   metWaivers?: readonly FeeWaiver["kind"][];
+  /** Bonuses only: where principal above the required cash sits (e.g. the best HYSA). Null = it earns nothing. */
+  excessCashProduct?: DepositProduct | null;
 }
 
 export interface LineItem {
@@ -151,20 +153,38 @@ function bonusApy(o: BonusOffer, p: DepositProduct | null, input: EffectiveApyIn
   const interestOn = (cents: number, d: number) =>
     p ? projectGrowth(p, { principalCents: cents, horizonDays: d, ignoreFees: true }).interestCents : 0;
 
-  const interest = interestOn(P, days);
+  // With a required balance, only that cash sits in the bonus account; the rest earns excessCashProduct's rate.
+  const sweep = cash > 0 ? (input.excessCashProduct ?? null) : null;
+  const inAccount = sweep ? cash : P;
+  const excessInterest = sweep
+    ? projectGrowth(sweep, { principalCents: P - cash, horizonDays: days, ignoreFees: true }).interestCents
+    : 0;
+  const interest = interestOn(inAccount, days);
   const fees = fee * monthsIn(days);
   const close = closure(days);
   const breakdown: LineItem[] = [{ key: "bonus", label: "Sign-up bonus", cents: o.bonusValue }];
   if (p) breakdown.push({ key: "interest", label: "Interest on the account", cents: interest });
+  if (sweep && P > cash) {
+    breakdown.push({
+      key: "interest",
+      label: `Interest on the rest at ${sweep.name}`,
+      cents: excessInterest,
+    });
+  }
   if (fees > 0) breakdown.push({ key: "monthly_fees", label: "Monthly fees not waived", cents: -fees });
   if (close > 0) breakdown.push({ key: "early_closure_fee", label: "Early closure fee", cents: -close });
 
   const explanation = [
     `Bonus: ${usd(o.bonusValue)}.`,
     p
-      ? `Interest on ${usd(P)} for ${Math.round(days)} days at the account's rate: ${usd(interest)}.`
-      : "The account's rate is unknown, so no interest is counted.",
+      ? `Interest on ${usd(inAccount)} for ${Math.round(days)} days at the account's rate: ${usd(interest)}.`
+      : `The account's rate is unknown, so no interest is counted on the ${usd(inAccount)} in it.`,
   ];
+  if (sweep && P > cash) {
+    explanation.push(
+      `The other ${usd(P - cash)} stays in ${sweep.name} for ${Math.round(days)} days: ${usd(excessInterest)}.`,
+    );
+  }
   if (fees > 0)
     explanation.push(`The ${usd(o.monthlyFeeCents)} monthly fee is not waived by the requirements.`);
   if (close > 0) {

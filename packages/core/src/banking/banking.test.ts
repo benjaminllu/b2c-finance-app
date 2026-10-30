@@ -217,6 +217,23 @@ describe("effectiveApy bonuses", () => {
     );
     expect(r.netEarningsCents).toBe(80_000);
   });
+  it("puts cash above the requirement in the excess-cash product", () => {
+    // $30,000 total, $10,000 required in a 0% checking; $20,000 at 5% for a year = 100000.
+    // net = 30000 bonus + 0 + 100000 = 130000
+    const checking = product({ apyTiers: [{ minBalanceCents: 0, maxBalanceCents: null, apyBps: 0 }] });
+    const r = effectiveApy(
+      { kind: "bonus", offer: offer(), product: checking },
+      { principalCents: 3_000_000, horizonDays: 365, excessCashProduct: product({ name: "HYSA" }) },
+    );
+    expect(r.netEarningsCents).toBe(130_000);
+    expect(r.breakdown.map((i) => i.cents)).toEqual([30_000, 0, 100_000]);
+    // Without it, the whole $30,000 sits in the 0% checking.
+    const bare = effectiveApy(
+      { kind: "bonus", offer: offer(), product: checking },
+      { principalCents: 3_000_000, horizonDays: 365 },
+    );
+    expect(bare.netEarningsCents).toBe(30_000);
+  });
   it("is infeasible when the cash is short, the hold outlasts the horizon, or it pays in points", () => {
     const run = (o: BonusOffer, principalCents: number, horizonDays: number) =>
       effectiveApy({ kind: "bonus", offer: o, product: null }, { principalCents, horizonDays });
