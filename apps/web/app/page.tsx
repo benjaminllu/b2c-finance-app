@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "@optima/ui";
 
+// The layout's sample-data banner reads live data, so do not prerender at build time.
+export const dynamic = "force-dynamic";
+
 const SECTIONS = [
   {
     href: "/cards",

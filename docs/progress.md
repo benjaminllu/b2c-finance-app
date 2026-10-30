@@ -10,8 +10,8 @@ Resume rule: read this file and `git log`, continue from the last completed chec
 - [x] Lead shared pieces: `@optima/core/eligibility`, account-history store + editor.
 - [x] Wave 2: Agent B (card UI), Agent C (offers), Agent G (planner).
 - [x] Wave 2 checkpoint. Commit: "wave 2 complete".
-- [ ] Agent F: quality and compliance pass.
-- [ ] Phase 2: integration, README, roadmap.
+- [x] Agent F: quality and compliance pass (docs/quality-report.md; Playwright smoke + axe, 34 tests).
+- [x] Phase 2: integration, README, roadmap. Commit: "integration: quality fixes, README, roadmap".
 
 ## Done in Wave 2
 
@@ -28,10 +28,8 @@ Resume rule: read this file and `git log`, continue from the last completed chec
 ## Open issues / decisions to review
 
 - No Postgres here: Prisma code paths (admin writes, db:seed, ingest runner) are unexercised.
-- No browser-driven check yet (Agent F's Playwright smoke test covers it).
-- Two offer net-value functions: `offerNetValue` (offers) and `plannerOfferValue` (planner). They agree on all
-  14 seed offers today; planner's early-closure logic is smarter (pays the fee only if cheaper than holding).
-  Unify on one before real data lands.
+- E2E ran against an existing Chromium (PW_CHROMIUM_PATH); CI should install the pinned build.
+- Resolved: offer net value has one implementation (`offerNetValue`); the planner adapts it.
 - Card engine defaults: credit utilization 0; first-year view counts unreachable bonuses (flagged).
 - Banking: deposits use compounded effective APY, bonuses simple annualization; ranking sorts by net dollars.
 - Offers ROI for cards = net / required spend (sorting only).

@@ -72,6 +72,8 @@ export function PlannerExplorer({
   const [s, update] = useUrlState(DEFAULTS);
   const [history] = useAccountHistory();
   const today = nowIso.slice(0, 10);
+  const now = useMemo(() => new Date(nowIso), [nowIso]);
+  const offersById = useMemo(() => new Map(offers.map((o) => [o.id, o])), [offers]);
   const thisMonth = today.slice(0, 7);
   const startMonth = /^\d{4}-\d{2}$/.test(s.start) && s.start > thisMonth ? s.start : thisMonth;
   const startDate = startMonth === thisMonth ? today : `${startMonth}-01`;
@@ -178,9 +180,9 @@ export function PlannerExplorer({
   return (
     <div className="space-y-6">
       <Alert variant="warning">
-        <strong>Sample data, not financial advice.</strong> Issuer rules and offers here are examples that may
-        be out of date or wrong. Verify every rule and offer term with the issuer before you apply. Opening
-        accounts affects your credit.
+        <strong>Verify before you apply.</strong> Issuer rules and offers here may be out of date or wrong,
+        and this is not financial advice. Verify every rule and offer term with the issuer before you apply.
+        Opening accounts affects your credit.
       </Alert>
 
       <Card>
@@ -286,8 +288,15 @@ export function PlannerExplorer({
       </Card>
 
       <PlanCapacity plan={plan} />
-      <PlanTimeline plan={plan} locks={locks} actions={actions} />
-      <SkippedList plan={plan} locks={locks} excluded={excluded} actions={actions} />
+      <PlanTimeline plan={plan} locks={locks} actions={actions} offersById={offersById} now={now} />
+      <SkippedList
+        plan={plan}
+        locks={locks}
+        excluded={excluded}
+        actions={actions}
+        offersById={offersById}
+        now={now}
+      />
 
       <Card>
         <CardHeader>

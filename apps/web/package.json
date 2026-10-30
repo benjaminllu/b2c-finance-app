@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run --passWithNoTests",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p e2e/tsconfig.json",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@optima/core": "workspace:*",
@@ -23,6 +24,8 @@
     "zod": "4.1.13"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.55.1",
     "@tailwindcss/postcss": "4.1.18",
     "@types/node": "22.18.12",
     "@types/react": "19.1.17",

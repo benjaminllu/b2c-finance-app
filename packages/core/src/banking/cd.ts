@@ -142,6 +142,7 @@ export function buildCdLadder(input: {
   cds: DepositProduct[];
 }): CdLadder {
   const { amountCents, rungs: n, spacingMonths, startDate } = input;
+  if (!Number.isInteger(n) || n < 1) throw new RangeError(`rungs must be a positive integer, got ${n}`);
   const cds = input.cds.filter((c) => c.type === "cd" && c.cdTermMonths !== null);
   const base = Math.floor(amountCents / n);
   const extra = amountCents - base * n;

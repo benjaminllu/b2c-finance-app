@@ -1,11 +1,41 @@
 "use client";
 
 import { monthName, type Plan, type PlannerLock, type PlanStep, type SkipKind } from "@optima/core/planner";
-import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@optima/ui";
+import type { BonusOffer } from "@optima/core";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  SampleBadge,
+  StalenessBadge,
+} from "@optima/ui";
 import { formatCentsWhole } from "@/lib/format";
 import type { PlannerActions } from "./planner-explorer";
 
 const LOAD_TEXT = { spend: "Minimum spend", dd: "Direct deposit", parked: "Keep a balance of" } as const;
+
+/** Verification status for an offer: stale offers must never be recommended silently. */
+function Provenance({ offer, now }: { offer: BonusOffer | undefined; now: Date }) {
+  if (!offer) return null;
+  return (
+    <span className="flex flex-wrap items-center gap-1 text-xs">
+      <StalenessBadge lastVerifiedAt={offer.lastVerifiedAt} kind="offers" now={now} />
+      <SampleBadge isSample={offer.isSample} />
+      <a
+        href={offer.sourceUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2"
+      >
+        Source<span className="sr-only"> for {offer.title}</span>
+      </a>
+    </span>
+  );
+}
 
 function Requirements({ step }: { step: PlanStep }) {
   if (step.loads.length === 0) return <li>No spend, deposit or balance requirement listed.</li>;
@@ -67,10 +97,14 @@ export function PlanTimeline({
   plan,
   locks,
   actions,
+  offersById,
+  now,
 }: {
   plan: Plan;
   locks: PlannerLock[];
   actions: PlannerActions;
+  offersById: Map<string, BonusOffer>;
+  now: Date;
 }) {
   const byMonth = new Map<number, PlanStep[]>();
   for (const s of plan.steps) byMonth.set(s.month, [...(byMonth.get(s.month) ?? []), s]);
@@ -108,6 +142,7 @@ export function PlanTimeline({
                             <p className="text-sm text-muted-foreground">
                               Apply {step.applyDate} · bonus expected about {step.bonusDate}
                             </p>
+                            <Provenance offer={offersById.get(step.offerId)} now={now} />
                           </div>
                           <div className="flex flex-wrap gap-1">
                             <Badge variant={step.hardPull ? "warning" : "secondary"}>
@@ -191,11 +226,15 @@ export function SkippedList({
   locks,
   excluded,
   actions,
+  offersById,
+  now,
 }: {
   plan: Plan;
   locks: PlannerLock[];
   excluded: string[];
   actions: PlannerActions;
+  offersById: Map<string, BonusOffer>;
+  now: Date;
 }) {
   if (plan.skipped.length === 0) return null;
   return (
@@ -229,6 +268,7 @@ export function SkippedList({
                   </Badge>
                 </div>
                 <p className="mt-1 text-sm">{s.reason}</p>
+                <Provenance offer={offersById.get(s.offerId)} now={now} />
                 <div className="mt-2 flex flex-wrap gap-2">
                   {isExcluded ? (
                     <Button size="sm" variant="outline" onClick={() => actions.include(s.offerId)}>

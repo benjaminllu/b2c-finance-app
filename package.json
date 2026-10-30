@@ -11,6 +11,7 @@
     "test": "pnpm -r --if-present test",
     "lint": "eslint .",
     "typecheck": "pnpm -r --if-present typecheck",
+    "e2e": "pnpm --filter @optima/web e2e",
     "format": "prettier --write .",
     "db:up": "docker compose up -d",
     "db:generate": "pnpm --filter @optima/db generate",

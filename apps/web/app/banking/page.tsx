@@ -1,6 +1,4 @@
 import { Suspense } from "react";
-import { Alert } from "@optima/ui";
-import { hasDatabase } from "@optima/db";
 import { PageHeader } from "@/components/page-header";
 import { BankingExplorer } from "@/components/banking/banking-explorer";
 import { getBanks, getDepositProducts } from "@/lib/data/banking";
@@ -20,11 +18,6 @@ export default async function BankingPage() {
         title="Banking"
         description="Compare checking, savings, money market accounts, CDs, and bank bonuses on one effective-APY scale."
       />
-      {!hasDatabase() && (
-        <Alert variant="warning" className="mb-6">
-          Showing sample seed data. Rates are examples, not live quotes.
-        </Alert>
-      )}
       <Suspense fallback={<p className="text-muted-foreground">Loading...</p>}>
         <BankingExplorer
           banks={banks}

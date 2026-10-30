@@ -48,12 +48,12 @@ const mk = (o: Partial<BonusOffer>): BonusOffer => ({
 const ctx = { currencies: [{ id: "ur", defaultCentsPerPoint: 1.25 }] };
 
 describe("offerNetValue", () => {
-  it("charges unwaived monthly fees over the holding period (90 days = 2 full months)", () => {
+  it("charges unwaived monthly fees per statement month started (90 days = 2.96 months -> 3)", () => {
     const r = offerNetValue(
       mk({ monthlyFeeCents: 1200, requirements: { ...req, holdingPeriodDays: 90 } }),
       ctx,
     );
-    expect(r.netCents).toBe(30000 - 2400);
+    expect(r.netCents).toBe(30000 - 3 * 1200);
   });
   it("skips waived fees", () => {
     const o = mk({
@@ -63,13 +63,18 @@ describe("offerNetValue", () => {
     });
     expect(offerNetValue(o, ctx).netCents).toBe(30000);
   });
-  it("uses the longer of holding period and closure window", () => {
-    const o = mk({
+  it("closes early or holds through the closure window, whichever costs less", () => {
+    // $10/month fee, 30-day hold, 183-day window (183 / 30.42 = 6.02 -> 7 months if held).
+    // No closure fee: close at day 30 = 1 month = $10 < $70 of fees to hold.
+    const free = mk({
       monthlyFeeCents: 1000,
       earlyClosureWindowDays: 183,
       requirements: { ...req, holdingPeriodDays: 30 },
     });
-    expect(offerNetValue(o, ctx).netCents).toBe(30000 - 6000);
+    expect(offerNetValue(free, ctx)).toMatchObject({ netCents: 30000 - 1000, keepOpenDays: 30 });
+    // $100 closure fee: closing early costs $10 + $100 = $110 > $70 to hold, so hold 183 days.
+    const fee = { ...free, earlyClosureFeeCents: 10000 };
+    expect(offerNetValue(fee, ctx)).toMatchObject({ netCents: 30000 - 7000, keepOpenDays: 183 });
   });
   it("counts the closure fee only when closing inside the window", () => {
     const o = mk({ earlyClosureFeeCents: 5000, earlyClosureWindowDays: 90 });
