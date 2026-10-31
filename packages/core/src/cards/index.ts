@@ -1,5 +1,6 @@
 export {
   annualValue,
+  centsPerPointFor,
   DAYS_PER_MONTH,
   DEFAULT_CREDIT_UTILIZATION,
   type AnnualValueResult,

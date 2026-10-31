@@ -57,6 +57,20 @@ test.describe("/cards", () => {
     await expect(page.locator("#spend-groceries")).toHaveValue("777");
     await expect(page.getByRole("heading", { name: /^Winner:/ })).toBeVisible();
   });
+
+  test("picker filters and sorts", async ({ page }) => {
+    await page.goto("/cards");
+    const items = page.getByRole("list", { name: "Cards" }).getByRole("listitem");
+    const all = await items.count();
+    await page.getByLabel("Annual fee").selectOption({ label: "No annual fee" });
+    await expect(items).not.toHaveCount(all);
+    for (const text of await items.allInnerTexts()) expect(text).toContain("No fee");
+    await page.getByLabel("Sort by").selectOption({ label: "Name (A-Z)" });
+    const names = (await items.allInnerTexts()).map((t) => t.split("\n")[0]!);
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+    await page.getByRole("button", { name: "Clear filters" }).click();
+    await expect(items).toHaveCount(all);
+  });
 });
 
 test("/offers: switching tab changes the list and URL", async ({ page }) => {

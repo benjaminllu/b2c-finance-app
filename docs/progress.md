@@ -47,6 +47,10 @@ Resume rule: read this file and `git log`, continue from the last completed chec
   the converted seed JSON). Seed hardPull = productType is credit_card; bonusPostingDays null (unknown).
 - Data question for the owner: Marriott Bonvoy Boundless sample rules cap groceries, gas and dining at
   $6,000 each; the real card may share one cap. Converted as-is.
+- Owner request: `/cards` picker filters (search, issuer, annual fee, catch-all rate, rewards kind, network,
+  personal/business, has bonus, no FX fee) and sorts (value for your spending, fee, catch-all, bonus, name).
+  Catch-all and bonus are valued at the user's cents-per-point; logic in `components/cards/picker.ts` (tested).
+  Filter state is local to the picker, not in the URL.
 - Next: step 4 (planner reads hardPull, bonusPostingDays, directDepositCount, eligibleStates).
 
 ## Open issues / decisions to review

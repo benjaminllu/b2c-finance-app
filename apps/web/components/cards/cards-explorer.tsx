@@ -4,10 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Alert } from "@optima/ui";
 import type { CreditCard, Issuer, RewardCurrency } from "@optima/core";
-import { analyze } from "./analysis";
+import { analyze, buildOptions } from "./analysis";
 import { BreakEvenChart, SensitivityPanel } from "./charts";
 import { CardPicker, CompareColumns } from "./compare-panel";
 import { CreditCheck, SpendEditor, ValuationInputs } from "./inputs-panel";
+import { pickerRows } from "./picker";
 import { Results, ViewToggle } from "./results-panel";
 import { decodeState, encodeState, MAX_CARDS, type CardsState } from "./state";
 
@@ -47,6 +48,11 @@ export function CardsExplorer({
           : state.cardIds,
     });
 
+  const rows = useMemo(
+    () => pickerRows(cards, currencyMap, state.spend, buildOptions(currencies, state)),
+    [cards, currencyMap, currencies, state],
+  );
+
   const ready = selected.length >= 2;
   const analysis = useMemo(
     () => (ready ? analyze(selected, currencies, state) : null),
@@ -55,7 +61,7 @@ export function CardsExplorer({
 
   return (
     <div className="space-y-8">
-      <CardPicker cards={cards} issuers={issuerMap} selected={state.cardIds} onToggle={toggle} />
+      <CardPicker rows={rows} issuers={issuerMap} selected={state.cardIds} onToggle={toggle} />
       {selected.length > 0 && (
         <CompareColumns
           cards={selected}

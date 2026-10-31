@@ -11,6 +11,7 @@ import {
   Input,
   Label,
   SampleBadge,
+  Select,
   StalenessBadge,
 } from "@optima/ui";
 import {
@@ -21,6 +22,14 @@ import {
   type RewardCurrency,
 } from "@optima/core";
 import { formatCentsWhole } from "@/lib/format";
+import {
+  filterAndSort,
+  NO_FILTERS,
+  PICKER_SORTS,
+  type PickerFilters,
+  type PickerRow,
+  type PickerSort,
+} from "./picker";
 import { MAX_CARDS } from "./state";
 
 const unit = (cur: RewardCurrency | undefined, m: number) => (cur?.kind === "cash" ? `${m}%` : `${m}x`);
@@ -43,41 +52,156 @@ function ruleText(card: CreditCard, r: EarnRule, cur: RewardCurrency | undefined
   return bits.join(", ");
 }
 
+const NETWORK_LABELS: Record<CreditCard["network"], string> = {
+  visa: "Visa",
+  mastercard: "Mastercard",
+  amex: "American Express",
+  discover: "Discover",
+};
+
+const FEE_OPTIONS = [
+  { value: "", label: "Any" },
+  { value: "0", label: "No annual fee" },
+  { value: "10000", label: "Up to $100" },
+  { value: "30000", label: "Up to $300" },
+];
+
+const CATCH_ALL_OPTIONS = [
+  { value: "0", label: "Any" },
+  { value: "1.5", label: "1.5% or more" },
+  { value: "2", label: "2% or more" },
+];
+
+/** Cents per dollar as a percent, e.g. 1.25 -> "1.25%". */
+const pct = (centsPerDollar: number) => `${Number(centsPerDollar.toFixed(2))}%`;
+
 export function CardPicker({
-  cards,
+  rows,
   issuers,
   selected,
   onToggle,
 }: {
-  cards: CreditCard[];
+  rows: PickerRow[];
   issuers: Map<string, Issuer>;
   selected: string[];
   onToggle: (id: string) => void;
 }) {
-  const [q, setQ] = useState("");
-  const needle = q.trim().toLowerCase();
-  const shown = cards.filter(
-    (c) => !needle || `${c.name} ${issuers.get(c.issuerId)?.name ?? ""}`.toLowerCase().includes(needle),
+  const [f, setF] = useState<PickerFilters>(NO_FILTERS);
+  const [sort, setSort] = useState<PickerSort>("value");
+  const set = (p: Partial<PickerFilters>) => setF((prev) => ({ ...prev, ...p }));
+  const issuerName = (id: string) => issuers.get(id)?.name ?? "";
+  const shown = filterAndSort(rows, f, sort, issuerName);
+  const issuerOptions = [...new Set(rows.map((r) => r.card.issuerId))]
+    .map((id) => ({ id, name: issuerName(id) || id }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const networks = [...new Set(rows.map((r) => r.card.network))].sort();
+  const filtered = JSON.stringify(f) !== JSON.stringify(NO_FILTERS);
+
+  const select = (
+    id: string,
+    label: string,
+    value: string,
+    onChange: (v: string) => void,
+    options: { value: string; label: string }[],
+  ) => (
+    <div className="space-y-1">
+      <Label htmlFor={id}>{label}</Label>
+      <Select id={id} value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </Select>
+    </div>
   );
+  const check = (label: string, checked: boolean, onChange: (v: boolean) => void) => (
+    <label className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        className="size-4"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+      {label}
+    </label>
+  );
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Pick 2 to {MAX_CARDS} cards</CardTitle>
-        <CardDescription>{selected.length} selected. Search by card name or issuer.</CardDescription>
+        <CardDescription>
+          {selected.length} selected. Showing {shown.length} of {rows.length}. Rates and values use your point
+          valuations and spending below.
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="card-search">Search cards</Label>
-          <Input
-            id="card-search"
-            type="search"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="e.g. Sapphire, Amex"
-          />
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-1 sm:col-span-2">
+            <Label htmlFor="card-search">Search cards</Label>
+            <Input
+              id="card-search"
+              type="search"
+              value={f.q}
+              onChange={(e) => set({ q: e.target.value })}
+              placeholder="e.g. Sapphire, Amex"
+            />
+          </div>
+          {select(
+            "card-sort",
+            "Sort by",
+            sort,
+            (v) => setSort(v as PickerSort),
+            Object.entries(PICKER_SORTS).map(([value, label]) => ({ value, label })),
+          )}
+          {select("card-issuer", "Issuer", f.issuerId, (v) => set({ issuerId: v }), [
+            { value: "", label: "All" },
+            ...issuerOptions.map((i) => ({ value: i.id, label: i.name })),
+          ])}
+          {select(
+            "card-fee",
+            "Annual fee",
+            f.maxFeeCents === null ? "" : String(f.maxFeeCents),
+            (v) => set({ maxFeeCents: v === "" ? null : Number(v) }),
+            FEE_OPTIONS,
+          )}
+          {select(
+            "card-catch-all",
+            "Catch-all rate",
+            String(f.minCatchAllCents),
+            (v) => set({ minCatchAllCents: Number(v) }),
+            CATCH_ALL_OPTIONS,
+          )}
+          {select("card-kind", "Rewards", f.kind, (v) => set({ kind: v }), [
+            { value: "", label: "Any" },
+            { value: "cash", label: "Cash back" },
+            { value: "points", label: "Points" },
+            { value: "miles", label: "Miles" },
+          ])}
+          {select("card-network", "Network", f.network, (v) => set({ network: v }), [
+            { value: "", label: "Any" },
+            ...networks.map((n) => ({ value: n, label: NETWORK_LABELS[n] })),
+          ])}
+          {select("card-audience", "Card type", f.audience, (v) => set({ audience: v }), [
+            { value: "", label: "Personal and business" },
+            { value: "personal", label: "Personal" },
+            { value: "business", label: "Business" },
+          ])}
+          <div className="flex flex-col justify-end gap-2 text-sm">
+            {check("Has a sign-up bonus", f.hasBonus, (v) => set({ hasBonus: v }))}
+            {check("No foreign transaction fee", f.noForeignFee, (v) => set({ noForeignFee: v }))}
+          </div>
+          {filtered && (
+            <div className="flex items-end">
+              <Button variant="outline" size="sm" onClick={() => setF(NO_FILTERS)}>
+                Clear filters
+              </Button>
+            </div>
+          )}
         </div>
-        <ul className="grid max-h-64 gap-1 overflow-y-auto sm:grid-cols-2" aria-label="Cards">
-          {shown.map((c) => {
+        <ul className="grid max-h-80 gap-1 overflow-y-auto sm:grid-cols-2" aria-label="Cards">
+          {shown.map(({ card: c, catchAllCents, bonusCents, valueCents }) => {
             const on = selected.includes(c.id);
             return (
               <li key={c.id}>
@@ -92,7 +216,13 @@ export function CardPicker({
                   <span>
                     {c.name}
                     <span className="block text-xs text-muted-foreground">
-                      {issuers.get(c.issuerId)?.name}
+                      {issuerName(c.issuerId)} ·{" "}
+                      {c.annualFeeCents === 0 ? "No fee" : `${formatCentsWhole(c.annualFeeCents)} fee`} ·{" "}
+                      {pct(catchAllCents)} catch-all
+                      {bonusCents > 0 ? ` · ${formatCentsWhole(bonusCents)} bonus` : ""}
+                    </span>
+                    <span className="block text-xs text-muted-foreground">
+                      {formatCentsWhole(valueCents)}/yr for your spending
                     </span>
                   </span>
                 </label>
