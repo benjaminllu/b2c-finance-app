@@ -13,6 +13,11 @@ export const IsoDateSchema = z.iso.date();
 export const IsoDateTimeSchema = z.iso.datetime({ offset: true });
 /** Two-letter US state or DC. */
 export const StateCodeSchema = z.string().regex(/^[A-Z]{2}$/);
+/** The 50 states and DC, for state pickers. */
+export const US_STATES =
+  "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY".split(
+    " ",
+  );
 
 /** Every curated record says where it came from and when a human last checked it. */
 export const ProvenanceSchema = z.object({

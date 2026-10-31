@@ -29,6 +29,8 @@ export interface PlannerInput {
   maxPullsPer6Months: number;
   maxPullsPer12Months: number;
   horizonMonths: number;
+  /** Two-letter state of residence; offers limited to other states are skipped. Unknown = null/absent. */
+  state?: string | null;
   /** First possible application date; later months start on the 1st. */
   startDate: IsoDate;
   offers: readonly BonusOffer[];
@@ -66,8 +68,10 @@ export interface PlanStep {
   applyDate: IsoDate;
   hardPull: boolean;
   loads: RequirementLoad[];
-  /** Assumed to post when the last requirement window ends. */
+  /** When the last requirement window ends, plus the offer's posting delay when known. */
   bonusDate: IsoDate;
+  /** The offer's posting delay; null = unknown, so bonusDate may be early. */
+  bonusPostingDays: number | null;
   bonusMonth: number;
   value: OfferValue;
   /** Running total of net value in application order. */
@@ -234,8 +238,9 @@ export function buildPlan(input: PlannerInput): Plan {
     });
     const loads: RequirementLoad[] = [];
     if (r.minSpendCents) loads.push(mk("spend", r.minSpendCents, span(r.spendWindowDays)));
-    if (r.directDepositTotalCents)
-      loads.push(mk("dd", r.directDepositTotalCents, span(r.directDepositWindowDays)));
+    // A deposit count with no amount still takes a split.
+    if (r.directDepositTotalCents || r.directDepositCount)
+      loads.push(mk("dd", r.directDepositTotalCents ?? 0, span(r.directDepositWindowDays)));
     const parked = Math.max(r.minDepositCents ?? 0, r.minBalanceCents ?? 0);
     if (parked > 0) loads.push(mk("parked", parked, span(r.holdingPeriodDays)));
     return loads;
@@ -281,7 +286,7 @@ export function buildPlan(input: PlannerInput): Plan {
 
     const card = cardOf(o);
     const value = valueOf(o);
-    const bonusDate = addDays(date, requirementDays(o) || 30);
+    const bonusDate = addDays(date, (requirementDays(o) || 30) + (o.bonusPostingDays ?? 0));
     const record: AccountRecord = {
       id: `plan:${o.id}`,
       institutionId: o.institutionId,
@@ -295,11 +300,8 @@ export function buildPlan(input: PlannerInput): Plan {
       bonusReceivedAt: bonusDate,
     };
 
-    if (o.productType === "credit_card") {
-      const planned = [
-        ...placed.filter((p) => p.offer.productType === "credit_card").map((p) => p.date),
-        date,
-      ];
+    if (o.hardPull) {
+      const planned = [...placed.filter((p) => p.offer.hardPull).map((p) => p.date), date];
       const all = [...historyPulls, ...planned];
       for (const [months, limit] of [
         [6, cap.pullsPer6],
@@ -417,6 +419,12 @@ export function buildPlan(input: PlannerInput): Plan {
   for (const o of input.offers) {
     if (excluded.has(o.id)) skip(o, "excluded", "You excluded this offer.");
     else if (o.expiresAt && o.expiresAt < start) skip(o, "expired", `Expired on ${o.expiresAt}.`);
+    else if (input.state && o.eligibleStates && !o.eligibleStates.includes(input.state))
+      skip(
+        o,
+        "ineligible",
+        `Only open to residents of ${o.eligibleStates.join(", ")}; you are in ${input.state}.`,
+      );
     else if (!locks.has(o.id) && valueOf(o).netCents <= 0)
       skip(
         o,
@@ -608,6 +616,10 @@ export function buildPlan(input: PlannerInput): Plan {
         );
       }
     }
+    if (o.eligibleStates && !input.state)
+      reasons.push(`Only open to residents of ${o.eligibleStates.join(", ")}. Enter your state to check.`);
+    const dd = o.requirements.directDepositCount;
+    if (dd) reasons.push(`Needs ${dd} qualifying direct deposit${dd > 1 ? "s" : ""} in the window.`);
     const rules = rulesFor(o);
     if (rules.length)
       reasons.push(
@@ -622,10 +634,11 @@ export function buildPlan(input: PlannerInput): Plan {
       month: p.month,
       monthLabel: label(p.month),
       applyDate: p.date,
-      hardPull: o.productType === "credit_card",
+      hardPull: o.hardPull,
       loads: p.loads,
       bonusDate: p.record.bonusReceivedAt as IsoDate,
       bonusMonth: monthOf(p.record.bonusReceivedAt as IsoDate),
+      bonusPostingDays: o.bonusPostingDays,
       value: v,
       cumulativeNetCents: running,
       locked: locks.has(o.id),
@@ -639,10 +652,7 @@ export function buildPlan(input: PlannerInput): Plan {
     ...steps.map((s) => s.bonusMonth),
     ...steps.flatMap((s) => s.loads.map((l) => l.fromMonth + l.months - 1)),
   );
-  const pullDates = [
-    ...historyPulls,
-    ...placed.filter((p) => p.offer.productType === "credit_card").map((p) => p.date),
-  ];
+  const pullDates = [...historyPulls, ...placed.filter((p) => p.offer.hardPull).map((p) => p.date)];
   let cumulative = 0;
   const months: MonthUsage[] = Array.from({ length: lastMonth + 1 }, (_, k) => {
     const sum = (kind: LoadKind) =>
@@ -687,9 +697,10 @@ export function buildPlan(input: PlannerInput): Plan {
     assumptions: [
       "Eligibility rules and offers are sample data. Verify every rule and offer term with the issuer before applying.",
       "Card minimum spends come from organic spending you would do anyway, spread evenly over the spend window (rounded to whole months).",
-      "Direct deposits are spread evenly over the deposit window; each active requirement uses one split.",
-      "Credit card applications are hard pulls; bank accounts are treated as soft pulls (some banks do pull hard).",
-      "Bonuses are assumed to post when the last requirement window ends; real posting can take several weeks more.",
+      "Direct deposits are spread evenly over the deposit window; each active requirement uses one split, including requirements that only set a number of deposits.",
+      "Each offer says whether it is a hard pull. Past accounts in your history count as hard pulls when they are credit cards.",
+      "Bonuses post when the last requirement window ends plus the offer's posting delay. Where the delay is unknown, expect the bonus later than shown. Deposit accounts stay open until the bonus posts.",
+      "Offers limited to certain states are skipped when your state is outside them; with no state entered they are kept and flagged.",
       "Net value is the bonus at your cents-per-point value minus the first-year annual fee (unless waived), unwaived monthly fees, and an early-closure fee only when that is cheaper than keeping the account open.",
       "Deposit accounts are assumed closed after their holding period; cards stay open. Ongoing card rewards and interest on parked cash are not counted.",
       "Applications in later months are dated the 1st, or the first day the rules allow that month.",

@@ -47,12 +47,13 @@ export function requiredOpenDays(offer: BonusOffer): number {
 const feeMonths = (days: number) => Math.ceil(days / DAYS_PER_MONTH - 1e-9);
 
 /**
- * Default days a deposit account stays open: through the requirements, then either close (paying any
+ * Default days a deposit account stays open: through the requirements and bonus posting, then either close (paying any
  * early-closure fee) or keep it open through the closure window, whichever costs less.
  */
 function defaultKeepOpenDays(offer: BonusOffer): number {
   const fee = offer.monthlyFeeWaivedByRequirements ? 0 : offer.monthlyFeeCents;
-  const base = Math.max(requirementDays(offer), 1);
+  // Most banks only pay a bonus into an open account, so hold it until the bonus posts.
+  const base = Math.max(requirementDays(offer) + (offer.bonusPostingDays ?? 0), 1);
   const win = offer.earlyClosureWindowDays ?? 0;
   const closeEarly = fee * feeMonths(base) + (base < win ? offer.earlyClosureFeeCents : 0);
   const holdLonger = fee * feeMonths(Math.max(base, win));

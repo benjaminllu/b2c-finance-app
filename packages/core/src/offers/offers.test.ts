@@ -57,6 +57,16 @@ describe("offerNetValue", () => {
     );
     expect(r.netCents).toBe(30000 - 3 * 1200);
   });
+  it("keeps the account open, paying fees, until the bonus posts", () => {
+    const o = mk({
+      monthlyFeeCents: 1200,
+      requirements: { ...req, holdingPeriodDays: 90 },
+      bonusPostingDays: 60,
+    });
+    const r = offerNetValue(o, ctx);
+    expect(r.keepOpenDays).toBe(150);
+    expect(r.netCents).toBe(30000 - 5 * 1200);
+  });
   it("skips waived fees", () => {
     const o = mk({
       monthlyFeeCents: 1200,

@@ -1,9 +1,25 @@
 "use client";
 
 import { useId, useMemo } from "react";
-import type { BonusOffer, CreditCard, EligibilityRule, RewardCurrency } from "@optima/core";
+import {
+  US_STATES,
+  type BonusOffer,
+  type CreditCard,
+  type EligibilityRule,
+  type RewardCurrency,
+} from "@optima/core";
 import { buildPlan, type PlannerLock } from "@optima/core/planner";
-import { Alert, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Label } from "@optima/ui";
+import {
+  Alert,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Select,
+} from "@optima/ui";
 import {
   AccountHistoryEditor,
   type InstitutionOption,
@@ -26,6 +42,7 @@ const DEFAULTS = {
   lock: "",
   ex: "",
   cpp: "",
+  st: "",
 };
 
 /** "a:3,b" -> [{a, month 3}, {b, any month}] */
@@ -94,6 +111,7 @@ export function PlannerExplorer({
         maxPullsPer12Months: clampInt(s.p12, 0, 30, 4),
         horizonMonths: horizon,
         startDate,
+        state: US_STATES.includes(s.st) ? s.st : null,
         offers,
         rules,
         cards,
@@ -112,6 +130,7 @@ export function PlannerExplorer({
       s.p12,
       horizon,
       startDate,
+      s.st,
       offers,
       rules,
       cards,
@@ -213,13 +232,23 @@ export function PlannerExplorer({
           {numberField(
             "p6",
             "Max hard pulls per 6 months",
-            "Credit card applications. Bank accounts count as soft pulls.",
+            "Applications marked as hard pulls: most cards and some bank accounts.",
           )}
           {numberField(
             "p12",
             "Max hard pulls per 12 months",
             "Across any rolling 12 months, including recent cards.",
           )}
+          <div className="space-y-1">
+            <Label htmlFor={`${ids}-st`}>Your state</Label>
+            <Select id={`${ids}-st`} value={s.st} onChange={(e) => update({ st: e.target.value })}>
+              <option value="">Not set</option>
+              {US_STATES.map((st) => (
+                <option key={st}>{st}</option>
+              ))}
+            </Select>
+            <p className="text-xs text-muted-foreground">Skips offers not open where you live.</p>
+          </div>
           <fieldset className="space-y-1">
             <legend className="text-sm font-medium">Plan length</legend>
             <div className="flex gap-4 pt-2">

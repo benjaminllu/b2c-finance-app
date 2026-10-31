@@ -1,14 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import type {
-  Bank,
-  BonusOffer,
-  CreditCard,
-  DepositProduct,
-  EligibilityRule,
-  Issuer,
-  RewardCurrency,
+import {
+  US_STATES,
+  type Bank,
+  type BonusOffer,
+  type CreditCard,
+  type DepositProduct,
+  type EligibilityRule,
+  type Issuer,
+  type RewardCurrency,
 } from "@optima/core";
 import { eligibilityByOffer } from "@optima/core/offers";
 import {
@@ -48,11 +49,6 @@ const DEFAULTS = {
   soon: "0",
   hide: "0",
 };
-
-const STATES =
-  "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY".split(
-    " ",
-  );
 
 export function OffersExplorer({
   offers,
@@ -193,7 +189,7 @@ export function OffersExplorer({
             <Label htmlFor="of-state">Your state</Label>
             <Select id="of-state" value={s.state} onChange={(e) => update({ state: e.target.value })}>
               <option value="">Any state</option>
-              {STATES.map((st) => (
+              {US_STATES.map((st) => (
                 <option key={st}>{st}</option>
               ))}
             </Select>

@@ -49,7 +49,9 @@ function Requirements({ step }: { step: PlanStep }) {
           <li key={l.kind}>
             {l.kind === "parked"
               ? `${LOAD_TEXT.parked} ${formatCentsWhole(l.totalCents)}, ${span}`
-              : `${LOAD_TEXT[l.kind]} ${formatCentsWhole(l.totalCents)}: about ${formatCentsWhole(l.monthlyCents)}/month, ${span}`}
+              : l.totalCents === 0
+                ? `${LOAD_TEXT[l.kind]} (no minimum amount listed), ${span}`
+                : `${LOAD_TEXT[l.kind]} ${formatCentsWhole(l.totalCents)}: about ${formatCentsWhole(l.monthlyCents)}/month, ${span}`}
           </li>
         );
       })}
@@ -141,12 +143,13 @@ export function PlanTimeline({
                             <p className="font-medium">{step.title}</p>
                             <p className="text-sm text-muted-foreground">
                               Apply {step.applyDate} · bonus expected about {step.bonusDate}
+                              {step.bonusPostingDays === null && " (posting time unknown, may be later)"}
                             </p>
                             <Provenance offer={offersById.get(step.offerId)} now={now} />
                           </div>
                           <div className="flex flex-wrap gap-1">
                             <Badge variant={step.hardPull ? "warning" : "secondary"}>
-                              {step.hardPull ? "Hard pull" : "Soft pull (assumed)"}
+                              {step.hardPull ? "Hard pull" : "Soft pull"}
                             </Badge>
                             {step.locked && <Badge variant="outline">Locked</Badge>}
                           </div>

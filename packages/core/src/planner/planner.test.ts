@@ -360,3 +360,52 @@ describe("plannerOfferValue", () => {
     });
   });
 });
+
+describe("offer fields the planner reads", () => {
+  it("counts pulls by the offer's hardPull flag, not its product type", () => {
+    const hardBank = bankOffer("hard-bank", 40_000, 100_000, { hardPull: true });
+    const softCard = cardOffer("soft-card", 50_000, 100_000, { hardPull: false });
+    const plan = buildPlan(input([hardBank, softCard], { maxPullsPer6Months: 0, maxPullsPer12Months: 0 }));
+    expect(plan.steps.map((s) => [s.offerId, s.hardPull])).toEqual([["soft-card", false]]);
+    expect(plan.skipped.find((s) => s.offerId === "hard-bank")?.kind).toBe("pull_limit");
+  });
+
+  it("adds the posting delay to the bonus date and keeps unknown delays flagged", () => {
+    const [known, unknown] = buildPlan(
+      input([
+        cardOffer("known", 50_000, 100_000, { bonusPostingDays: 45 }),
+        cardOffer("unknown", 40_000, 100_000),
+      ]),
+    ).steps;
+    expect(known).toMatchObject({ applyDate: "2026-11-01", bonusDate: "2027-03-16", bonusPostingDays: 45 });
+    expect(unknown).toMatchObject({
+      applyDate: "2026-11-01",
+      bonusDate: "2027-01-30",
+      bonusPostingDays: null,
+    });
+  });
+
+  it("gives a deposit-count-only requirement a direct deposit split", () => {
+    const countOnly = bankOffer("count-only", 30_000, 0, {
+      requirements: { ...noReq, directDepositCount: 2, directDepositWindowDays: 60 },
+    });
+    expect(buildPlan(input([countOnly], { directDepositSplits: 0 })).skipped[0]?.kind).toBe("capacity");
+    const step = buildPlan(input([countOnly])).steps[0];
+    expect(step?.loads).toEqual([{ kind: "dd", fromMonth: 0, months: 2, totalCents: 0, monthlyCents: 0 }]);
+    expect(step?.reasons).toContain("Needs 2 qualifying direct deposits in the window.");
+  });
+
+  it("skips offers outside the user's state and flags them when the state is unknown", () => {
+    const caOnly = bankOffer("ca-only", 30_000, 100_000, { eligibleStates: ["CA"] });
+    const ny = buildPlan(input([caOnly], { state: "NY" }));
+    expect(ny.steps).toHaveLength(0);
+    expect(ny.skipped[0]).toMatchObject({
+      kind: "ineligible",
+      reason: "Only open to residents of CA; you are in NY.",
+    });
+    expect(buildPlan(input([caOnly], { state: "CA" })).steps).toHaveLength(1);
+    expect(buildPlan(input([caOnly])).steps[0]?.reasons).toContain(
+      "Only open to residents of CA. Enter your state to check.",
+    );
+  });
+});

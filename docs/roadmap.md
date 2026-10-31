@@ -34,8 +34,6 @@ a Postgres migrate + seed + db-test job, and e2e on the pinned Chromium.
 - **Anniversary-aware card year** in the card engine (today the first card year is modelled as a calendar year).
 - **Exact break-even chart sampling**: export cap breakpoints from `@optima/core/cards` so charts sample at
   every kink.
-- **Planner fidelity**: respect `directDepositCount`, `eligibleStates` (add a state input), per-offer hard vs
-  soft pull, and bonus posting delays as data (`bonusPostingDays`).
 - **Ingestion**: let a source confirming an unchanged rate refresh `lastVerifiedAt` (with provenance), and
   add retries and batching.
 - **Observability**: error tracking and privacy-respecting product analytics (no personal data).

@@ -51,7 +51,12 @@ Resume rule: read this file and `git log`, continue from the last completed chec
   personal/business, has bonus, no FX fee) and sorts (value for your spending, fee, catch-all, bonus, name).
   Catch-all and bonus are valued at the user's cents-per-point; logic in `components/cards/picker.ts` (tested).
   Filter state is local to the picker, not in the URL.
-- Next: step 4 (planner reads hardPull, bonusPostingDays, directDepositCount, eligibleStates).
+- Step 4 done: the planner counts pulls by `offer.hardPull` (history: credit cards count as hard pulls);
+  bonus date = requirement windows + `bonusPostingDays` (unknown = 0, flagged in the timeline); a
+  `directDepositCount`-only requirement takes a DD split; `/planner` has a state input (`st` in the URL) that
+  skips offers outside `eligibleStates`, and flags them when no state is set. `offerNetValue` keeps deposit
+  accounts open until the bonus posts, so monthly fees cover the posting wait. `US_STATES` now lives in core.
+- Next: step 5 (ingestion: unchanged rates refresh lastVerifiedAt with provenance; retries).
 
 ## Open issues / decisions to review
 
@@ -62,5 +67,6 @@ Resume rule: read this file and `git log`, continue from the last completed chec
 - Card engine defaults: credit utilization 0; first-year view counts unreachable bonuses (flagged).
 - Banking: deposits use compounded effective APY, bonuses simple annualization; ranking sorts by net dollars.
 - Offers ROI for cards = net / required spend (sorting only).
-- Planner ignores directDepositCount and eligibleStates; bank accounts treated as soft pulls.
+- Planner: DD count only reserves a split (no per-deposit amount or pay-frequency check); unknown posting
+  delay counts as 0 days.
 - Ingest: unchanged rates do not bump lastVerifiedAt; adapters opt-in via INGEST_ADAPTERS.
