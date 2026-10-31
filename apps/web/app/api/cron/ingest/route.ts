@@ -18,8 +18,20 @@ export async function GET(request: Request) {
   const results = [];
   for (const adapter of adapters) {
     // runIngest records failures on the IngestRun row instead of throwing, so one bad adapter doesn't stop the rest.
-    const { adapterId, runId, status, created, updated, unchanged, errors } = await runIngest(store, adapter);
-    results.push({ adapterId, runId, status, created, updated, unchanged, errorCount: errors.length });
+    const { adapterId, runId, status, created, updated, unchanged, verified, errors } = await runIngest(
+      store,
+      adapter,
+    );
+    results.push({
+      adapterId,
+      runId,
+      status,
+      created,
+      updated,
+      unchanged,
+      verified,
+      errorCount: errors.length,
+    });
   }
   return NextResponse.json({ ran: results.length, results });
 }
