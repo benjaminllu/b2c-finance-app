@@ -58,7 +58,7 @@ test.describe("/cards", () => {
     await expect(page.getByRole("heading", { name: /^Winner:/ })).toBeVisible();
   });
 
-  test("highlights the winning card first and updates it as cards change", async ({ page }) => {
+  test("highlights the winning card in place and moves the highlight as cards change", async ({ page }) => {
     await page.goto("/cards?c=chase-sapphire-preferred,citi-double-cash");
     const winner = page.getByRole("heading", { name: /^Winner:/ });
     const pickName = async () => {
@@ -68,9 +68,15 @@ test.describe("/cards", () => {
     };
     const name = (t: string) => (t.match(/Winner: (.+?)\s*Best of/)?.[1] ?? "").trim();
     expect(await pickName()).toContain(name(await winner.innerText()));
-    await page.getByRole("list", { name: "Cards" }).getByText("Chase Freedom Unlimited").click();
+    await page.getByRole("checkbox", { name: /^Chase Freedom Unlimited/ }).check();
     await expect(winner).toContainText("Chase Freedom Unlimited");
     expect(await pickName()).toContain("Chase Freedom Unlimited");
+    // Columns keep the selection order; only the highlight moves.
+    await expect(page.getByRole("button", { name: /^Remove / })).toHaveText([
+      /Chase Sapphire Preferred/,
+      /Citi Double Cash/,
+      /Chase Freedom Unlimited/,
+    ]);
   });
 
   test("picker filters and sorts", async ({ page }) => {

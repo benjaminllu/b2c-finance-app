@@ -32,6 +32,7 @@ import {
   type PickerSort,
 } from "./picker";
 import { MAX_CARDS } from "./state";
+import { CardArt } from "./card-art";
 
 const unit = (cur: RewardCurrency | undefined, m: number) => (cur?.kind === "cash" ? `${m}%` : `${m}x`);
 
@@ -214,6 +215,7 @@ export function CardPicker({
                     disabled={!on && selected.length >= MAX_CARDS}
                     onChange={() => onToggle(c.id)}
                   />
+                  <CardArt card={c} issuerName={issuerName(c.issuerId)} className="w-14" />
                   <span>
                     {c.name}
                     <span className="block text-xs text-muted-foreground">
@@ -245,7 +247,7 @@ export function CompareColumns({
   winner,
   onRemove,
 }: {
-  /** Shown in this order; the winner, when there is one, should come first. */
+  /** Shown in this (selection) order; the winner is highlighted wherever it sits. */
   cards: CreditCard[];
   issuers: Map<string, Issuer>;
   currencies: Map<string, RewardCurrency>;
@@ -260,14 +262,16 @@ export function CompareColumns({
         const bonusCur = c.signupBonus && currencies.get(c.signupBonus.currencyId);
         const top = winner?.cardId === c.id;
         return (
-          <Card key={c.id} className={top ? "border-primary ring-2 ring-primary" : undefined}>
+          <Card key={c.id} className={top ? "relative border-primary ring-2 ring-primary" : undefined}>
             <CardHeader>
+              {/* Sits on the border so the highlighted column stays aligned with the others. */}
               {top && (
-                <Badge className="w-fit">
+                <Badge className="absolute -top-3 left-4 w-fit">
                   Our pick for your spending
                   {winner.marginCents > 0 ? `: +${formatCentsWhole(winner.marginCents)}/yr` : ""}
                 </Badge>
               )}
+              <CardArt card={c} issuerName={issuers.get(c.issuerId)?.name ?? ""} className="w-40" />
               <CardTitle className="leading-snug">{c.name}</CardTitle>
               <CardDescription>
                 {issuers.get(c.issuerId)?.name} - earns {cur?.name ?? c.rewardCurrencyId}

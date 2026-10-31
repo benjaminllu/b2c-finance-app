@@ -51,6 +51,7 @@ model CreditCard {
   signupBonus              Json? // SignupBonus | null
   isBusiness               Boolean
   foreignTransactionFeeBps Int
+  imageUrl                 String? // site path or licensed URL; null = generic card art
   sourceUrl                String
   lastVerifiedAt           DateTime
   isSample                 Boolean        @default(false)

@@ -54,6 +54,7 @@ export function card(c: Partial<CreditCard> & Pick<CreditCard, "id">): CreditCar
     signupBonus: null,
     isBusiness: false,
     foreignTransactionFeeBps: 0,
+    imageUrl: null,
     sourceUrl: "https://example.com/test",
     lastVerifiedAt: "2026-10-30T00:00:00Z",
     isSample: true,

@@ -51,18 +51,19 @@ valuationSourceUrl | null, isSample`. The UI shows `valuationSource` next to the
 
 ### CreditCard
 
-| Field                                    | Notes                                                         |
-| ---------------------------------------- | ------------------------------------------------------------- |
-| `network`                                | visa, mastercard, amex, discover                              |
-| `productFamily`                          | Groups siblings for family-wide bonus rules; null if none     |
-| `annualFeeCents`, `firstYearFeeWaived`   |                                                               |
-| `rewardCurrencyId`                       |                                                               |
-| `baseMultiplier`                         | Earn rate for any category without an earn rule               |
-| `earnRules[]`                            | See EarnRule                                                  |
-| `capGroups[]`                            | `{ id, capAmountCents, capPeriod }`: spend caps; see EarnRule |
-| `credits[]`                              | See CardCredit                                                |
-| `signupBonus`                            | `{ amount, currencyId, minSpendCents, windowDays }` or null   |
-| `isBusiness`, `foreignTransactionFeeBps` |                                                               |
+| Field                                    | Notes                                                                                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `network`                                | visa, mastercard, amex, discover                                                                                                           |
+| `productFamily`                          | Groups siblings for family-wide bonus rules; null if none                                                                                  |
+| `annualFeeCents`, `firstYearFeeWaived`   |                                                                                                                                            |
+| `rewardCurrencyId`                       |                                                                                                                                            |
+| `baseMultiplier`                         | Earn rate for any category without an earn rule                                                                                            |
+| `earnRules[]`                            | See EarnRule                                                                                                                               |
+| `capGroups[]`                            | `{ id, capAmountCents, capPeriod }`: spend caps; see EarnRule                                                                              |
+| `credits[]`                              | See CardCredit                                                                                                                             |
+| `signupBonus`                            | `{ amount, currencyId, minSpendCents, windowDays }` or null                                                                                |
+| `isBusiness`, `foreignTransactionFeeBps` |                                                                                                                                            |
+| `imageUrl`                               | Card art: a site path under `apps/web/public` (e.g. `/cards/x.png`) or a URL you are licensed to use. null = generic card drawn by the UI. |
 
 ### EarnRule
 

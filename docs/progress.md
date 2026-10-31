@@ -60,6 +60,9 @@ Resume rule: read this file and `git log`, continue from the last completed chec
   (3 attempts, 1s/2s backoff; writes are not retried) and reports a `verified` count, also in the cron JSON.
 - Owner request: `/cards` picker in 3 columns on wide screens; the compare columns are ordered by value with
   the winner first, outlined and badged "Our pick for your spending" (updates as cards are added/removed).
+- Owner request: card art. `CreditCard.imageUrl` (migration `20261031120000_card_image_url`), shown in the
+  picker and compare columns; null draws a generic card (issuer, name, network on an issuer-hued gradient).
+  Compare columns keep selection order; only the "Our pick" highlight moves.
 - Next: step 6 (verified data) is the owner's job; then step 7 (sign-in with Auth.js), step 8 (roadmap).
 
 ## Open issues / decisions to review
@@ -69,6 +72,9 @@ Everything outstanding lives here. Owner action items first.
 - Owner: every record is still `isSample: true`; step 6 (replace with verified data) is the owner's job.
   When verifying offers, also fill `bonusPostingDays` (all null) and check `hardPull` (seeded as "cards are
   hard pulls, bank accounts soft").
+- Owner: card art. Every `imageUrl` is null, so all cards show the generic face. Add licensed images (an
+  affiliate network's image feed, or issuer permission) as files in `apps/web/public/cards/` or URLs. Do not
+  copy art from issuer sites without permission.
 - Owner: Marriott Bonvoy Boundless sample rules cap groceries, gas and dining at $6,000 each; the real card
   may share one cap. Converted as-is.
 - Owner: CI status of pushes after 6fd0895 not checked from the dev machine (no `gh` CLI); see GitHub Actions.

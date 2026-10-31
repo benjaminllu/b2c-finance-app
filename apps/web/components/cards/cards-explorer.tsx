@@ -64,7 +64,7 @@ export function CardsExplorer({
       <CardPicker rows={rows} issuers={issuerMap} selected={state.cardIds} onToggle={toggle} />
       {selected.length > 0 && (
         <CompareColumns
-          cards={analysis ? analysis.ranked.map((r) => r.card) : selected}
+          cards={selected}
           winner={analysis?.winner ?? null}
           issuers={issuerMap}
           currencies={currencyMap}

@@ -106,6 +106,11 @@ export const CreditCardSchema = z
     signupBonus: SignupBonusSchema.nullable(),
     isBusiness: z.boolean(),
     foreignTransactionFeeBps: BpsSchema,
+    /**
+     * Card art: a site path ("/cards/x.png", under apps/web/public) or a URL the owner is licensed to use
+     * (e.g. an affiliate network's image feed). null = the UI draws a generic card.
+     */
+    imageUrl: z.union([z.url(), z.string().regex(/^\/[\w./-]+$/)]).nullable(),
   })
   .extend(ProvenanceSchema.shape)
   .extend(AffiliateSchema.shape)

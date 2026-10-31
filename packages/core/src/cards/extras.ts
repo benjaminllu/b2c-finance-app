@@ -30,6 +30,7 @@ export function flatRateCard(options: FlatRateCardOptions = {}): CreditCard {
     signupBonus: null,
     isBusiness: false,
     foreignTransactionFeeBps: 0,
+    imageUrl: null,
     sourceUrl: "https://optima.invalid/baseline",
     lastVerifiedAt: "2026-10-30T00:00:00Z",
     isSample: false,
