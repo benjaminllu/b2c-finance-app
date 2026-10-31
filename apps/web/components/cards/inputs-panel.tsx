@@ -39,7 +39,7 @@ export function SpendEditor({ state, patch }: { state: CardsState; patch: Patch 
             </Button>
           ))}
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3">
           {CATEGORIES.map((c) => (
             <div key={c} className="space-y-1.5">
               <Label htmlFor={`spend-${c}`}>{CATEGORY_LABELS[c]}</Label>
@@ -93,7 +93,7 @@ export function CreditCheck({
           discount.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-5">
         {cards.map((card) => {
           const fee = effectiveAnnualFee(card, usage);
           return (
@@ -109,7 +109,7 @@ export function CreditCheck({
                     const p = state.creditPercent[cr.id] ?? 0;
                     const mode = p >= 100 ? "full" : p <= 0 ? "never" : "partial";
                     return (
-                      <li key={cr.id} className="grid gap-2 sm:grid-cols-[1fr_auto_auto] sm:items-end">
+                      <li key={cr.id} className="space-y-2">
                         <div>
                           <Label htmlFor={`use-${cr.id}`}>
                             {cr.name} ({formatCentsWhole(cr.annualValueCents)}/yr)
@@ -118,35 +118,36 @@ export function CreditCheck({
                             <p className="mt-1 text-xs text-muted-foreground">{cr.usageConstraints}</p>
                           )}
                         </div>
-                        <Select
-                          id={`use-${cr.id}`}
-                          className="sm:w-40"
-                          value={mode}
-                          onChange={(e) =>
-                            setPercent(
-                              cr.id,
-                              e.target.value === "full" ? 100 : e.target.value === "partial" ? 50 : 0,
-                            )
-                          }
-                        >
-                          <option value="never">Never use</option>
-                          <option value="partial">Use partly</option>
-                          <option value="full">Use fully</option>
-                        </Select>
-                        {mode === "partial" && (
-                          <div className="flex items-center gap-1.5">
-                            <Input
-                              aria-label={`Percent of ${cr.name} you use`}
-                              className="w-20"
-                              type="number"
-                              min={1}
-                              max={99}
-                              value={p}
-                              onChange={(e) => setPercent(cr.id, Math.round(Number(e.target.value) || 0))}
-                            />
-                            <span className="text-sm">%</span>
-                          </div>
-                        )}
+                        <div className="flex items-center gap-2">
+                          <Select
+                            id={`use-${cr.id}`}
+                            value={mode}
+                            onChange={(e) =>
+                              setPercent(
+                                cr.id,
+                                e.target.value === "full" ? 100 : e.target.value === "partial" ? 50 : 0,
+                              )
+                            }
+                          >
+                            <option value="never">Never use</option>
+                            <option value="partial">Use partly</option>
+                            <option value="full">Use fully</option>
+                          </Select>
+                          {mode === "partial" && (
+                            <div className="flex items-center gap-1.5">
+                              <Input
+                                aria-label={`Percent of ${cr.name} you use`}
+                                className="w-20"
+                                type="number"
+                                min={1}
+                                max={99}
+                                value={p}
+                                onChange={(e) => setPercent(cr.id, Math.round(Number(e.target.value) || 0))}
+                              />
+                              <span className="text-sm">%</span>
+                            </div>
+                          )}
+                        </div>
                       </li>
                     );
                   })}
@@ -196,7 +197,7 @@ export function ValuationInputs({
           Cents per point or mile. The default and its source are shown; change it to match how you redeem.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4 sm:grid-cols-2">
+      <CardContent className="space-y-4">
         {used.map((cur) => (
           <div key={cur.id} className="space-y-1.5">
             <Label htmlFor={`cpp-${cur.id}`}>{cur.name} (cents per point)</Label>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState, type ReactNode } from "react";
 import {
   Badge,
   Button,
@@ -9,11 +9,18 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  cn,
   Input,
   Label,
   SampleBadge,
   Select,
   StalenessBadge,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@optima/ui";
 import {
   CATEGORY_LABELS,
@@ -31,6 +38,7 @@ import {
   type PickerRow,
   type PickerSort,
 } from "./picker";
+import type { Analysis } from "./analysis";
 import { MAX_CARDS } from "./state";
 import { CardArt } from "./card-art";
 
@@ -239,99 +247,177 @@ export function CardPicker({
   );
 }
 
-export function CompareColumns({
+const rate = (bps: number) => `${(bps / 100).toFixed(2)}%`;
+
+/**
+ * One table: cards as columns (selection order, the winner highlighted wherever it sits), card details as
+ * rows, then, once there is an analysis, the per-category value rows and the net total.
+ */
+export function CompareTable({
   cards,
   issuers,
   currencies,
   now,
-  winner,
+  analysis,
+  firstYear,
   onRemove,
 }: {
-  /** Shown in this (selection) order; the winner is highlighted wherever it sits. */
   cards: CreditCard[];
   issuers: Map<string, Issuer>;
   currencies: Map<string, RewardCurrency>;
   now: Date;
-  winner: { cardId: string; marginCents: number } | null;
+  analysis: Analysis | null;
+  firstYear: boolean;
   onRemove: (id: string) => void;
 }) {
+  const winner = analysis?.winner ?? null;
+  const results = new Map(analysis?.rows.map((r) => [r.card.id, r.result]));
+  const cols = [
+    ...cards.map((c) => ({ id: c.id, card: c as CreditCard | null, res: results.get(c.id) })),
+    ...(analysis ? [{ id: analysis.baseline.id, card: null, res: analysis.baselineResult }] : []),
+  ];
+  const pick = (id: string) => (winner?.cardId === id ? "bg-primary/5" : undefined);
+  const spendRows = analysis?.baselineResult.categories.filter((c) => c.annualSpendCents > 0) ?? [];
+  const row = (label: ReactNode, cell: (c: (typeof cols)[number]) => ReactNode, className?: string) => (
+    <TableRow className={className}>
+      <TableHead scope="row" className="h-auto py-2 align-top">
+        {label}
+      </TableHead>
+      {cols.map((c) => (
+        <TableCell key={c.id} className={cn("py-2 align-top", pick(c.id))}>
+          {cell(c)}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+  const section = (title: string) => (
+    <TableRow>
+      <TableHead scope="colgroup" colSpan={cols.length + 1} className="h-8 bg-muted/50 text-xs uppercase">
+        {title}
+      </TableHead>
+    </TableRow>
+  );
+
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {cards.map((c) => {
-        const cur = currencies.get(c.rewardCurrencyId);
-        const bonusCur = c.signupBonus && currencies.get(c.signupBonus.currencyId);
-        const top = winner?.cardId === c.id;
-        return (
-          <Card key={c.id} className={top ? "relative border-primary ring-2 ring-primary" : undefined}>
-            <CardHeader>
-              {/* Sits on the border so the highlighted column stays aligned with the others. */}
-              {top && (
-                <Badge className="absolute -top-3 left-4 w-fit">
+    <Table aria-label="Card comparison">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-32">
+            <span className="sr-only">Detail</span>
+          </TableHead>
+          {cols.map(({ id, card: c }) => (
+            <TableHead key={id} className={cn("h-auto min-w-36 py-3 align-top", pick(id))}>
+              {winner?.cardId === id && (
+                <Badge className="mb-2 w-fit">
                   Our pick for your spending
                   {winner.marginCents > 0 ? `: +${formatCentsWhole(winner.marginCents)}/yr` : ""}
                 </Badge>
               )}
-              <CardArt card={c} issuerName={issuers.get(c.issuerId)?.name ?? ""} className="w-40" />
-              <CardTitle className="leading-snug">{c.name}</CardTitle>
-              <CardDescription>
-                {issuers.get(c.issuerId)?.name} - earns {cur?.name ?? c.rewardCurrencyId}
-              </CardDescription>
-              <div className="flex flex-wrap gap-1.5">
-                <StalenessBadge lastVerifiedAt={c.lastVerifiedAt} kind="cards" now={now} />
-                <SampleBadge isSample={c.isSample} />
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm">
-              <div>
-                <h4 className="font-medium">Annual fee</h4>
-                <p>
-                  {c.annualFeeCents === 0 ? "None" : formatCentsWhole(c.annualFeeCents)}
-                  {c.firstYearFeeWaived && c.annualFeeCents > 0 ? " (waived the first year)" : ""}
-                </p>
-              </div>
-              <div>
-                <h4 className="font-medium">Earn rates</h4>
-                <ul className="list-disc pl-4 text-muted-foreground">
-                  {c.earnRules.map((r, i) => (
-                    <li key={i}>{ruleText(c, r, cur)}</li>
-                  ))}
-                  <li>Everything else: {unit(cur, c.baseMultiplier)}</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-medium">Credits</h4>
-                {c.credits.length === 0 ? (
-                  <p className="text-muted-foreground">None</p>
-                ) : (
-                  <ul className="list-disc pl-4 text-muted-foreground">
-                    {c.credits.map((cr) => (
-                      <li key={cr.id}>
-                        {cr.name}: {formatCentsWhole(cr.annualValueCents)}/yr face value
-                      </li>
-                    ))}
-                  </ul>
+              {c ? (
+                <div className="space-y-1.5">
+                  <CardArt card={c} issuerName={issuers.get(c.issuerId)?.name ?? ""} className="w-24" />
+                  <div className="font-semibold leading-snug text-foreground">{c.name}</div>
+                  <div className="text-xs font-normal">
+                    {issuers.get(c.issuerId)?.name} ·{" "}
+                    {c.annualFeeCents === 0 ? "No fee" : `${formatCentsWhole(c.annualFeeCents)} fee`}
+                    {c.firstYearFeeWaived && c.annualFeeCents > 0 ? " (waived year 1)" : ""}
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    <StalenessBadge lastVerifiedAt={c.lastVerifiedAt} kind="cards" now={now} />
+                    <SampleBadge isSample={c.isSample} />
+                  </div>
+                  <Button variant="outline" size="sm" className="h-7" onClick={() => onRemove(c.id)}>
+                    Remove<span className="sr-only"> {c.name}</span>
+                  </Button>
+                </div>
+              ) : (
+                <div className="font-semibold leading-snug text-foreground">Flat 2% cash back (baseline)</div>
+              )}
+            </TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
+      <TableBody className="text-xs">
+        {section("Card details")}
+        {row("Earn rates", ({ card: c }) => {
+          if (!c) return "2% on everything";
+          const cur = currencies.get(c.rewardCurrencyId);
+          return (
+            <ul className="space-y-0.5">
+              {c.earnRules.map((r, i) => (
+                <li key={i}>{ruleText(c, r, cur)}</li>
+              ))}
+              <li>Everything else: {unit(cur, c.baseMultiplier)}</li>
+            </ul>
+          );
+        })}
+        {row("Credits", ({ card: c }) =>
+          !c || c.credits.length === 0 ? (
+            "None"
+          ) : (
+            <ul className="space-y-0.5">
+              {c.credits.map((cr) => (
+                <li key={cr.id}>
+                  {cr.name}: {formatCentsWhole(cr.annualValueCents)}/yr
+                </li>
+              ))}
+            </ul>
+          ),
+        )}
+        {row("Sign-up bonus", ({ card: c }) => {
+          const b = c?.signupBonus;
+          if (!b) return "None";
+          const cur = currencies.get(b.currencyId);
+          return `${cur?.kind === "cash" ? `${formatCentsWhole(b.amount)} cash back` : `${b.amount.toLocaleString("en-US")} ${cur?.name ?? b.currencyId}`} after ${formatCentsWhole(b.minSpendCents)} in ${b.windowDays} days`;
+        })}
+        {analysis && (
+          <>
+            {section(`Your value, ${firstYear ? "first year" : "ongoing year"}`)}
+            {spendRows.map((base) => (
+              <Fragment key={base.category}>
+                {row(
+                  <>
+                    {CATEGORY_LABELS[base.category]}
+                    <span className="block font-normal">{formatCentsWhole(base.annualSpendCents)}/yr</span>
+                  </>,
+                  ({ res }) => {
+                    const line = res?.categories.find((x) => x.category === base.category);
+                    return (
+                      <>
+                        <span className="text-sm">{formatCentsWhole(line?.valueCents ?? 0)}</span>
+                        <span className="block text-muted-foreground">
+                          {rate(line?.effectiveRateBps ?? 0)}
+                          {line?.capHit && " - cap hit"}
+                        </span>
+                      </>
+                    );
+                  },
                 )}
-              </div>
-              <div>
-                <h4 className="font-medium">Sign-up bonus</h4>
-                {c.signupBonus ? (
-                  <p className="text-muted-foreground">
-                    {bonusCur?.kind === "cash"
-                      ? `${formatCentsWhole(c.signupBonus.amount)} cash back`
-                      : `${c.signupBonus.amount.toLocaleString("en-US")} ${bonusCur?.name ?? c.signupBonus.currencyId}`}{" "}
-                    after {formatCentsWhole(c.signupBonus.minSpendCents)} in {c.signupBonus.windowDays} days
-                  </p>
-                ) : (
-                  <p className="text-muted-foreground">None</p>
-                )}
-              </div>
-              <Button variant="outline" size="sm" onClick={() => onRemove(c.id)}>
-                Remove<span className="sr-only"> {c.name}</span>
-              </Button>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </div>
+              </Fragment>
+            ))}
+            {spendRows.length === 0 &&
+              row("Spending", () => (
+                <span className="text-muted-foreground">Enter some monthly spending.</span>
+              ))}
+            {row("Credits you use", ({ res }) => formatCentsWhole(res?.creditsCents ?? 0))}
+            {firstYear &&
+              row("Sign-up bonus value", ({ res }) => (
+                <>
+                  {formatCentsWhole(res?.bonusCents ?? 0)}
+                  {res?.signupBonus && !res.signupBonus.feasible && (
+                    <span className="block text-destructive">minimum spend not reached</span>
+                  )}
+                </>
+              ))}
+            {row("Annual fee", ({ res }) => `-${formatCentsWhole(res?.annualFeeCents ?? 0)}`)}
+            {row(
+              "Net value / year",
+              ({ res }) => formatCentsWhole(res?.totalCents ?? 0),
+              "text-sm font-semibold [&_th]:text-foreground",
+            )}
+          </>
+        )}
+      </TableBody>
+    </Table>
   );
 }

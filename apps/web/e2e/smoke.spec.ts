@@ -62,9 +62,9 @@ test.describe("/cards", () => {
     await page.goto("/cards?c=chase-sapphire-preferred,citi-double-cash");
     const winner = page.getByRole("heading", { name: /^Winner:/ });
     const pickName = async () => {
-      const first = page.locator(".ring-2").first();
-      await expect(first.getByText("Our pick for your spending")).toBeVisible();
-      return first.innerText();
+      const pick = page.getByRole("columnheader").filter({ hasText: "Our pick for your spending" });
+      await expect(pick).toHaveCount(1);
+      return pick.innerText();
     };
     const name = (t: string) => (t.match(/Winner: (.+?)\s*Best of/)?.[1] ?? "").trim();
     expect(await pickName()).toContain(name(await winner.innerText()));

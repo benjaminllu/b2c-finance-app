@@ -2,14 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Alert } from "@optima/ui";
+import { Alert, Tabs, TabsContent, TabsList, TabsTrigger } from "@optima/ui";
 import type { CreditCard, Issuer, RewardCurrency } from "@optima/core";
 import { analyze, buildOptions } from "./analysis";
 import { BreakEvenChart, SensitivityPanel } from "./charts";
-import { CardPicker, CompareColumns } from "./compare-panel";
+import { CardPicker, CompareTable } from "./compare-panel";
 import { CreditCheck, SpendEditor, ValuationInputs } from "./inputs-panel";
 import { pickerRows } from "./picker";
-import { Results, ViewToggle } from "./results-panel";
+import { BestWallet, BreakEvens, ViewToggle, WinnerSummary } from "./results-panel";
 import { decodeState, encodeState, MAX_CARDS, type CardsState } from "./state";
 
 export function CardsExplorer({
@@ -59,49 +59,81 @@ export function CardsExplorer({
     [ready, selected, currencies, state],
   );
 
+  const firstYear = state.view === "first_year";
+  const table = selected.length > 0 && (
+    <CompareTable
+      cards={selected}
+      issuers={issuerMap}
+      currencies={currencyMap}
+      now={now}
+      analysis={analysis}
+      firstYear={firstYear}
+      onRemove={toggle}
+    />
+  );
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <CardPicker rows={rows} issuers={issuerMap} selected={state.cardIds} onToggle={toggle} />
-      {selected.length > 0 && (
-        <CompareColumns
-          cards={selected}
-          winner={analysis?.winner ?? null}
-          issuers={issuerMap}
-          currencies={currencyMap}
-          now={now}
-          onRemove={toggle}
-        />
-      )}
-      {!ready && <Alert variant="warning">Select at least two cards to see which one wins.</Alert>}
 
-      <SpendEditor state={state} patch={patch} />
-      {selected.length > 0 && <CreditCheck cards={selected} state={state} patch={patch} />}
-      <ValuationInputs cards={selected} currencies={currencyMap} state={state} patch={patch} />
+      <div className="grid gap-6 lg:grid-cols-[20rem_minmax(0,1fr)] lg:items-start">
+        {/* Inputs stay in view while the results scroll beside them. */}
+        <aside
+          aria-label="Your inputs"
+          className="space-y-6 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto"
+        >
+          <SpendEditor state={state} patch={patch} />
+          {selected.length > 0 && <CreditCheck cards={selected} state={state} patch={patch} />}
+          <ValuationInputs cards={selected} currencies={currencyMap} state={state} patch={patch} />
+        </aside>
 
-      {analysis && (
-        <section className="space-y-6" aria-labelledby="results-heading">
-          <div className="space-y-3">
+        <section className="min-w-0 space-y-4" aria-labelledby="results-heading">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="results-heading" className="text-xl font-semibold tracking-tight">
               Results
             </h2>
             <ViewToggle state={state} patch={patch} />
           </div>
-          <Results a={analysis} state={state} cards={selected} />
-          <BreakEvenChart
-            cards={selected}
-            baseline={analysis.baseline}
-            spend={state.spend}
-            options={analysis.options}
-          />
-          <SensitivityPanel
-            cards={selected}
-            baseline={analysis.baseline}
-            spend={state.spend}
-            options={analysis.options}
-            currencies={currencyMap}
-          />
+          {!ready && <Alert variant="warning">Select at least two cards to see which one wins.</Alert>}
+          {!analysis ? (
+            table
+          ) : (
+            <>
+              <WinnerSummary a={analysis} firstYear={firstYear} />
+              <Tabs defaultValue="compare">
+                <TabsList className="h-auto flex-wrap">
+                  <TabsTrigger value="compare">Comparison</TabsTrigger>
+                  <TabsTrigger value="break-even">Break-evens</TabsTrigger>
+                  <TabsTrigger value="wallet">Best wallet</TabsTrigger>
+                  <TabsTrigger value="sensitivity">Sensitivity</TabsTrigger>
+                </TabsList>
+                <TabsContent value="compare">{table}</TabsContent>
+                <TabsContent value="break-even" className="space-y-6">
+                  <BreakEvens a={analysis} cards={selected} />
+                  <BreakEvenChart
+                    cards={selected}
+                    baseline={analysis.baseline}
+                    spend={state.spend}
+                    options={analysis.options}
+                  />
+                </TabsContent>
+                <TabsContent value="wallet">
+                  <BestWallet a={analysis} cards={selected} />
+                </TabsContent>
+                <TabsContent value="sensitivity">
+                  <SensitivityPanel
+                    cards={selected}
+                    baseline={analysis.baseline}
+                    spend={state.spend}
+                    options={analysis.options}
+                    currencies={currencyMap}
+                  />
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
         </section>
-      )}
+      </div>
     </div>
   );
 }

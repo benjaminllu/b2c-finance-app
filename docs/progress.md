@@ -63,6 +63,10 @@ Resume rule: read this file and `git log`, continue from the last completed chec
 - Owner request: card art. `CreditCard.imageUrl` (migration `20261031120000_card_image_url`), shown in the
   picker and compare columns; null draws a generic card (issuer, name, network on an issuer-hued gradient).
   Compare columns keep selection order; only the "Our pick" highlight moves.
+- Owner request: shorter `/cards` (7,395px -> 2,813px at 1280px with 3 cards). Inputs (spending, credits, point
+  values) sit in a sticky side column on desktop; card details and per-category value merged into one
+  comparison table (cards as columns, baseline last, winner column highlighted); results below the winner
+  summary are tabs (Comparison, Break-evens + chart, Best wallet, Sensitivity). The active tab is not in the URL.
 - Next: step 6 (verified data) is the owner's job; then step 7 (sign-in with Auth.js), step 8 (roadmap).
 
 ## Open issues / decisions to review
@@ -93,4 +97,4 @@ Everything outstanding lives here. Owner action items first.
 - Ingest: adapters opt-in via INGEST_ADAPTERS. Re-verification provenance is only in the IngestRun log (no
   per-record "verified by" field); a feed re-verifying a sample record does not clear `isSample`. Batching
   (roadmap) not done; writes are one record at a time.
-- `/cards` picker filters and sort are not in the URL (card choices and inputs are).
+- `/cards` picker filters and sort, and the results tab, are not in the URL (card choices and inputs are).
