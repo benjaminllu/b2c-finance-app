@@ -1,4 +1,5 @@
 import { ApyTierSchema, type ApyTier, type Bank, type DepositProduct } from "@optima/core";
+import { jsonEqual } from "@optima/core/ingest";
 import { bankToRow, depositProductToRow } from "./mappers";
 import { getPrisma } from "./index";
 
@@ -25,7 +26,8 @@ export const saveDepositProduct = async (
   const prisma = getPrisma();
   const { id, ...data } = depositProductToRow(product);
   const existing = await prisma.depositProduct.findUnique({ where: { id }, select: { apyTiers: true } });
-  const changed = !existing || JSON.stringify(existing.apyTiers) !== JSON.stringify(product.apyTiers);
+  // jsonb does not keep key order, so compare structurally.
+  const changed = !existing || !jsonEqual(existing.apyTiers, product.apyTiers);
   await prisma.$transaction([
     prisma.depositProduct.upsert({ where: { id }, create: { id, ...data }, update: data }),
     ...(changed

@@ -24,6 +24,7 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: true,
     timeout: 180_000,
-    env: { ADMIN_PASSWORD: "test" },
+    // Empty DATABASE_URL pins the seed-JSON path even when a local .env points at Postgres.
+    env: { ADMIN_PASSWORD: "test", DATABASE_URL: "" },
   },
 });

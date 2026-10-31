@@ -25,10 +25,27 @@ Resume rule: read this file and `git log`, continue from the last completed chec
 - Checkpoint fixes: bonus ranking now puts cash above the requirement in the best savings/MM account
   (`excessCashProduct`); web Vitest `@/` alias. Checks: typecheck, 110 tests, lint, seed:validate; all pages 200.
 
+- [x] Post-v1 step 1: database path exercised on a real Postgres 16. Step 2: CI workflow added.
+
+## Done in post-v1 steps 1-2
+
+- Ran against Postgres 16 (embedded-postgres, no Docker on the dev machine): migrate, `db:seed` x2 (second run
+  appends 0 rate rows), every page 200 on the DB path, admin save/edit/verify through the real forms, bad-JSON
+  error, cron ingest 401 without secret and idempotent with `INGEST_ADAPTERS=sample-rates-csv`.
+- Fixed: `db:seed` never loaded `.env` (tsx doesn't); it now loads it when present.
+- Fixed: admin `saveDepositProduct` compared tiers with JSON.stringify, but jsonb reorders keys, so every
+  unchanged save appended a RateHistory row. Now uses `jsonEqual`. Covered by `packages/db/src/prisma.db.test.ts`
+  (skipped unless DATABASE_URL is set; runs in the CI db job).
+- e2e pins `DATABASE_URL=""` so it always runs in seed mode, even with a local `.env`.
+- CI: `.github/workflows/ci.yml` has `check`, `db` (Postgres service) and `e2e` (pinned Chromium) jobs. Not yet run on
+  GitHub: there is no remote.
+- Next: step 3 (schema changes and a new migration).
+
 ## Open issues / decisions to review
 
-- No Postgres here: Prisma code paths (admin writes, db:seed, ingest runner) are unexercised.
-- E2E ran against an existing Chromium (PW_CHROMIUM_PATH); CI should install the pinned build.
+- Deleting a bank that still has products surfaces Prisma's raw FK error in the admin banner (step 3 adds cascade).
+- Local e2e still uses PW_CHROMIUM_PATH: on the dev machine a `playwright install chromium` started at
+  2026-10-30 14:52 hung and holds `%LOCALAPPDATA%\ms-playwright\__dirlock`; kill it to install the pinned build.
 - Resolved: offer net value has one implementation (`offerNetValue`); the planner adapts it.
 - Card engine defaults: credit utilization 0; first-year view counts unreachable bonuses (flagged).
 - Banking: deposits use compounded effective APY, bonuses simple annualization; ranking sorts by net dollars.

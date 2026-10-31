@@ -34,8 +34,8 @@ pnpm db:seed                  # idempotent; safe to re-run
 pnpm dev
 ```
 
-`apps/web` reads `.env` from its own folder in Next.js; either put the variables there or export them in your
-shell.
+Each package reads `.env` from its own folder: copy the file into `packages/db` (migrate, seed) and `apps/web`
+(Next.js) too, or export the variables in your shell.
 
 ## Commands
 

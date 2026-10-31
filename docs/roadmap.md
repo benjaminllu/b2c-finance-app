@@ -5,11 +5,10 @@
 1. **Real, verified data.** Replace every `isSample: true` record with data checked against its source, and
    set up the verification cadence (offers every 14 days, rates every 7). The sample banner disappears on
    its own once no sample record is shown.
-2. **Exercise the database path.** Run migrations, `db:seed`, the admin writes, and the ingestion runner
-   against a real Postgres (none was available while v1 was built), and add an integration test job in CI.
-3. **Legal review** of disclosures, affiliate handling, and the data-source checklist.
-4. **Install Playwright's pinned Chromium in CI** (`pnpm --filter @optima/web exec playwright install chromium`)
-   and run `pnpm e2e` there; locally it was run against an existing Chromium via `PW_CHROMIUM_PATH`.
+2. **Legal review** of disclosures, affiliate handling, and the data-source checklist.
+
+Done: the database path was exercised against Postgres 16, and CI (`.github/workflows/ci.yml`) runs checks,
+a Postgres migrate + seed + db-test job, and e2e on the pinned Chromium.
 
 ## Planned features
 
