@@ -61,6 +61,22 @@ describe("annualValue", () => {
     expect(line(r, "groceries").earnRule?.multiplier).toBe(3);
   });
 
+  it("shares one annual cap group across categories pro rata", () => {
+    const combined = card({
+      id: "combined-cap",
+      earnRules: [
+        rule({ category: "groceries", multiplier: 3, capGroupId: "everyday" }),
+        rule({ category: "gas", multiplier: 3, capGroupId: "everyday" }),
+      ],
+      capGroups: [{ id: "everyday", capAmountCents: 600_000, capPeriod: "annual" }],
+    });
+    const r = annualValue(combined, spend({ groceries: 600, gas: 400 }), opts);
+    // $12,000/yr in the group, $6,000 cap: groceries gets 60% of it ($3,600 x 3 + $3,600 x 1 = 14,400c),
+    // gas 40% ($2,400 x 3 + $2,400 x 1 = 9,600c).
+    expect(line(r, "groceries")).toMatchObject({ points: 14_400, spendAboveCapCents: 360_000 });
+    expect(line(r, "gas")).toMatchObject({ points: 9_600, spendAboveCapCents: 240_000 });
+  });
+
   it("applies quarterly and monthly caps per period", () => {
     const r = annualValue(quarterlyCapped, spend({ dining: 700, gas: 600 }), opts);
     // dining: $2,100/quarter -> $1,500 x 4 + $600 x 1 = 6,600 pts/q x 4 = 26,400 pts x 1.5c = 39,600c

@@ -25,12 +25,19 @@ import { MAX_CARDS } from "./state";
 
 const unit = (cur: RewardCurrency | undefined, m: number) => (cur?.kind === "cash" ? `${m}%` : `${m}x`);
 
-function ruleText(r: EarnRule, cur: RewardCurrency | undefined): string {
+function ruleText(card: CreditCard, r: EarnRule, cur: RewardCurrency | undefined): string {
   const bits = [`${CATEGORY_LABELS[r.category]}: ${unit(cur, r.multiplier)}`];
-  if (r.capAmountCents !== null && r.capPeriod)
+  const group = card.capGroups.find((g) => g.id === r.capGroupId);
+  if (group) {
+    const shared = card.earnRules
+      .filter((o) => o !== r && o.capGroupId === group.id && o.category !== r.category)
+      .map((o) => CATEGORY_LABELS[o.category]);
+    const period = group.capPeriod.replace("annual", "year").replace("ly", "");
     bits.push(
-      `up to ${formatCentsWhole(r.capAmountCents)}/${r.capPeriod.replace("annual", "year").replace("ly", "")}`,
+      `up to ${formatCentsWhole(group.capAmountCents)}/${period}` +
+        (shared.length ? ` combined with ${[...new Set(shared)].join(", ")}` : ""),
     );
+  }
   if (r.rotating) bits.push(`rotating (Q${r.activeQuarters?.join(", Q")})`);
   if (r.portalOnly) bits.push("issuer portal only");
   return bits.join(", ");
@@ -141,7 +148,7 @@ export function CompareColumns({
                 <h4 className="font-medium">Earn rates</h4>
                 <ul className="list-disc pl-4 text-muted-foreground">
                   {c.earnRules.map((r, i) => (
-                    <li key={i}>{ruleText(r, cur)}</li>
+                    <li key={i}>{ruleText(c, r, cur)}</li>
                   ))}
                   <li>Everything else: {unit(cur, c.baseMultiplier)}</li>
                 </ul>

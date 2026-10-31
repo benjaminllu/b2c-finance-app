@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { EarnRuleSchema, emptySpendProfile, mapIssuerCategory, SpendProfileSchema } from "./index";
+import { card, rule } from "../cards/fixtures";
+import { emptySpendProfile, mapIssuerCategory, SpendProfileSchema } from "./index";
 
 describe("shared schemas", () => {
   it("maps issuer categories, defaulting to other", () => {
@@ -7,19 +8,11 @@ describe("shared schemas", () => {
     expect(mapIssuerCategory("something odd")).toEqual(["other"]);
   });
 
-  it("rejects a cap amount without a period", () => {
-    const rule = {
-      category: "dining",
-      multiplier: 3,
-      capAmountCents: 100_000,
-      capPeriod: null,
-      capGroup: null,
-      afterCapMultiplier: null,
-      rotating: false,
-      activeQuarters: null,
-      portalOnly: false,
-    };
-    expect(EarnRuleSchema.safeParse(rule).success).toBe(false);
+  it("rejects an earn rule pointing at a missing cap group", () => {
+    const earnRules = [rule({ category: "dining", multiplier: 3, capGroupId: "dining" })];
+    expect(() => card({ id: "x", earnRules })).toThrow(/no capGroups entry \\"dining\\"/);
+    const capGroups = [{ id: "dining", capAmountCents: 100_000, capPeriod: "annual" as const }];
+    expect(card({ id: "x", earnRules, capGroups }).capGroups).toEqual(capGroups);
   });
 
   it("requires every category in a spend profile", () => {

@@ -110,6 +110,7 @@ function OfferForm({ offer }: { offer?: BonusOffer }) {
       {num("monthlyFeeCents", "Monthly fee (cents)", offer?.monthlyFeeCents ?? 0)}
       {num("earlyClosureFeeCents", "Early closure fee (cents)", offer?.earlyClosureFeeCents ?? 0)}
       {num("earlyClosureWindowDays", "Early closure window (days)", offer?.earlyClosureWindowDays, 1)}
+      {num("bonusPostingDays", "Bonus posts after (days; blank = unknown)", offer?.bonusPostingDays)}
       {num("lookbackMonths", "Eligibility lookback (months)", offer?.eligibility.lookbackMonths, 1)}
       <div className="space-y-1">
         <Label htmlFor={`${f}-lookbackScope`}>Lookback scope</Label>
@@ -162,6 +163,7 @@ function OfferForm({ offer }: { offer?: BonusOffer }) {
           name="monthlyFeeWaivedByRequirements"
           checked={offer?.monthlyFeeWaivedByRequirements}
         />
+        <Check label="Hard credit pull" name="hardPull" checked={offer?.hardPull ?? true} />
         <Check label="Lifetime limit" name="lifetimeLimit" checked={offer?.eligibility.lifetimeLimit} />
         <Check label="Is affiliate" name="isAffiliate" checked={offer?.isAffiliate} />
         <Check label="Sample data" name="isSample" checked={offer?.isSample ?? false} />

@@ -14,6 +14,7 @@
     "rewardCurrencyId": "usd",
     "baseMultiplier": 2,
     "earnRules": [],
+    "capGroups": [],
     "sourceUrl": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -40,6 +41,7 @@
     "rewardCurrencyId": "usd",
     "baseMultiplier": 2,
     "earnRules": [],
+    "capGroups": [],
     "sourceUrl": "https://www.wellsfargo.com/credit-cards/active-cash/",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -64,9 +66,7 @@
       {
         "category": "groceries",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q1",
+        "capGroupId": "rotating-q1",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [1],
@@ -75,9 +75,7 @@
       {
         "category": "drugstores",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q1",
+        "capGroupId": "rotating-q1",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [1],
@@ -86,9 +84,7 @@
       {
         "category": "gas",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q2",
+        "capGroupId": "rotating-q2",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [2],
@@ -97,9 +93,7 @@
       {
         "category": "transit",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q2",
+        "capGroupId": "rotating-q2",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [2],
@@ -108,9 +102,7 @@
       {
         "category": "dining",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q3",
+        "capGroupId": "rotating-q3",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [3],
@@ -119,9 +111,7 @@
       {
         "category": "streaming",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q3",
+        "capGroupId": "rotating-q3",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [3],
@@ -130,9 +120,7 @@
       {
         "category": "online_retail",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q4",
+        "capGroupId": "rotating-q4",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [4],
@@ -141,13 +129,33 @@
       {
         "category": "utilities",
         "multiplier": 5,
-        "capAmountCents": 150000,
-        "capPeriod": "quarterly",
-        "capGroup": "rotating-q4",
+        "capGroupId": "rotating-q4",
         "afterCapMultiplier": null,
         "rotating": true,
         "activeQuarters": [4],
         "portalOnly": false
+      }
+    ],
+    "capGroups": [
+      {
+        "id": "rotating-q1",
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly"
+      },
+      {
+        "id": "rotating-q2",
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly"
+      },
+      {
+        "id": "rotating-q3",
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly"
+      },
+      {
+        "id": "rotating-q4",
+        "capAmountCents": 150000,
+        "capPeriod": "quarterly"
       }
     ],
     "sourceUrl": "https://www.discover.com/credit-cards/cash-back/it-card.html",
@@ -179,9 +187,7 @@
       {
         "category": "groceries",
         "multiplier": 6,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "groceries",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -190,9 +196,7 @@
       {
         "category": "streaming",
         "multiplier": 6,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -201,9 +205,7 @@
       {
         "category": "transit",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -212,13 +214,18 @@
       {
         "category": "gas",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
+      }
+    ],
+    "capGroups": [
+      {
+        "id": "groceries",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
       }
     ],
     "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
@@ -250,9 +257,7 @@
       {
         "category": "groceries",
         "multiplier": 3,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "groceries",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -261,9 +266,7 @@
       {
         "category": "gas",
         "multiplier": 3,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "gas",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -272,13 +275,28 @@
       {
         "category": "online_retail",
         "multiplier": 3,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "online-retail",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
+      }
+    ],
+    "capGroups": [
+      {
+        "id": "groceries",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
+      },
+      {
+        "id": "gas",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
+      },
+      {
+        "id": "online-retail",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
       }
     ],
     "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
@@ -310,9 +328,7 @@
       {
         "category": "dining",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -321,9 +337,7 @@
       {
         "category": "drugstores",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -332,15 +346,14 @@
       {
         "category": "travel",
         "multiplier": 5,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": true
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -378,9 +391,7 @@
       {
         "category": "groceries",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -389,9 +400,7 @@
       {
         "category": "dining",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -400,9 +409,7 @@
       {
         "category": "gas",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -411,9 +418,7 @@
       {
         "category": "airfare",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -422,9 +427,7 @@
       {
         "category": "hotels",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -433,15 +436,14 @@
       {
         "category": "transit",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -479,9 +481,7 @@
       {
         "category": "dining",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -490,9 +490,7 @@
       {
         "category": "streaming",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -501,9 +499,7 @@
       {
         "category": "groceries",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -512,9 +508,7 @@
       {
         "category": "travel",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -523,9 +517,7 @@
       {
         "category": "airfare",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -534,9 +526,7 @@
       {
         "category": "hotels",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -545,15 +535,14 @@
       {
         "category": "transit",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -612,9 +601,7 @@
       {
         "category": "dining",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -623,9 +610,7 @@
       {
         "category": "travel",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -634,9 +619,7 @@
       {
         "category": "airfare",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -645,9 +628,7 @@
       {
         "category": "hotels",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -656,15 +637,14 @@
       {
         "category": "transit",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -744,9 +724,7 @@
       {
         "category": "airfare",
         "multiplier": 5,
-        "capAmountCents": 50000000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "airfare",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -755,13 +733,18 @@
       {
         "category": "hotels",
         "multiplier": 5,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": true
+      }
+    ],
+    "capGroups": [
+      {
+        "id": "airfare",
+        "capAmountCents": 50000000,
+        "capPeriod": "annual"
       }
     ],
     "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
@@ -808,9 +791,7 @@
       {
         "category": "hotels",
         "multiplier": 10,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -819,15 +800,14 @@
       {
         "category": "airfare",
         "multiplier": 5,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": true
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://www.capitalone.com/credit-cards/venture-x/",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -865,9 +845,7 @@
       {
         "category": "airfare",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -876,9 +854,7 @@
       {
         "category": "dining",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -887,15 +863,14 @@
       {
         "category": "groceries",
         "multiplier": 2,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://www.americanexpress.com/us/credit-cards/card/delta-skymiles-gold-american-express-card/",
     "lastVerifiedAt": "2026-08-15T00:00:00Z",
     "isSample": true,
@@ -933,9 +908,7 @@
       {
         "category": "hotels",
         "multiplier": 6,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -944,9 +917,7 @@
       {
         "category": "groceries",
         "multiplier": 3,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "groceries",
         "afterCapMultiplier": 2,
         "rotating": false,
         "activeQuarters": null,
@@ -955,9 +926,7 @@
       {
         "category": "gas",
         "multiplier": 3,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "gas",
         "afterCapMultiplier": 2,
         "rotating": false,
         "activeQuarters": null,
@@ -966,13 +935,28 @@
       {
         "category": "dining",
         "multiplier": 3,
-        "capAmountCents": 600000,
-        "capPeriod": "annual",
-        "capGroup": null,
+        "capGroupId": "dining",
         "afterCapMultiplier": 2,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
+      }
+    ],
+    "capGroups": [
+      {
+        "id": "groceries",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
+      },
+      {
+        "id": "gas",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
+      },
+      {
+        "id": "dining",
+        "capAmountCents": 600000,
+        "capPeriod": "annual"
       }
     ],
     "sourceUrl": "https://creditcards.chase.com/travel-credit-cards/marriott-bonvoy/boundless",
@@ -1004,9 +988,7 @@
       {
         "category": "dining",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -1015,9 +997,7 @@
       {
         "category": "streaming",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
@@ -1026,15 +1006,14 @@
       {
         "category": "groceries",
         "multiplier": 3,
-        "capAmountCents": null,
-        "capPeriod": null,
-        "capGroup": null,
+        "capGroupId": null,
         "afterCapMultiplier": null,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
       }
     ],
+    "capGroups": [],
     "sourceUrl": "https://www.capitalone.com/credit-cards/savor-dining-rewards/",
     "lastVerifiedAt": "2026-10-30T00:00:00Z",
     "isSample": true,
@@ -1064,9 +1043,7 @@
       {
         "category": "travel",
         "multiplier": 3,
-        "capAmountCents": 15000000,
-        "capPeriod": "annual",
-        "capGroup": "ink-bonus",
+        "capGroupId": "ink-bonus",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -1075,9 +1052,7 @@
       {
         "category": "airfare",
         "multiplier": 3,
-        "capAmountCents": 15000000,
-        "capPeriod": "annual",
-        "capGroup": "ink-bonus",
+        "capGroupId": "ink-bonus",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -1086,9 +1061,7 @@
       {
         "category": "hotels",
         "multiplier": 3,
-        "capAmountCents": 15000000,
-        "capPeriod": "annual",
-        "capGroup": "ink-bonus",
+        "capGroupId": "ink-bonus",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -1097,9 +1070,7 @@
       {
         "category": "transit",
         "multiplier": 3,
-        "capAmountCents": 15000000,
-        "capPeriod": "annual",
-        "capGroup": "ink-bonus",
+        "capGroupId": "ink-bonus",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
@@ -1108,13 +1079,18 @@
       {
         "category": "utilities",
         "multiplier": 3,
-        "capAmountCents": 15000000,
-        "capPeriod": "annual",
-        "capGroup": "ink-bonus",
+        "capGroupId": "ink-bonus",
         "afterCapMultiplier": 1,
         "rotating": false,
         "activeQuarters": null,
         "portalOnly": false
+      }
+    ],
+    "capGroups": [
+      {
+        "id": "ink-bonus",
+        "capAmountCents": 15000000,
+        "capPeriod": "annual"
       }
     ],
     "sourceUrl": "https://creditcards.chase.com/business-credit-cards/ink/business-preferred",

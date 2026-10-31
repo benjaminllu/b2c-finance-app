@@ -2,7 +2,7 @@ import { CATEGORIES, emptySpendProfile } from "../types";
 import type { Category, CreditCard, SpendProfile } from "../types";
 import {
   annualValue,
-  capBucket,
+  capOf,
   centsPerPointFor,
   evaluateMonths,
   roundValue,
@@ -75,9 +75,10 @@ export function optimizeWallet(
           const rule = tables[i]?.[month]?.[category] ?? null;
           let multiplier = rule ? rule.multiplier : card.baseMultiplier;
           let room = Infinity;
-          const bucket = rule ? capBucket(card, rule, month) : null;
-          if (rule && bucket) {
-            room = (rule.capAmountCents ?? 0) - (capUsed[i]?.get(bucket) ?? 0);
+          const cap = rule ? capOf(card, rule, month) : null;
+          const bucket = cap?.key ?? null;
+          if (rule && cap) {
+            room = cap.capCents - (capUsed[i]?.get(cap.key) ?? 0);
             if (room <= 0) {
               multiplier = rule.afterCapMultiplier ?? card.baseMultiplier;
               room = Infinity;

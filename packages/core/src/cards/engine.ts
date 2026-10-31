@@ -144,16 +144,17 @@ export function ruleTable(card: CreditCard, includePortalOnly: boolean): Record<
   });
 }
 
-/**
- * Cap bucket a capped rule's spend counts against in a month: shared by capGroup, one per period.
- * shortcut: rules in one capGroup are assumed to share capAmountCents/capPeriod; the rule in hand is used.
- */
-export function capBucket(card: CreditCard, rule: EarnRule, month: number): string | null {
-  if (rule.capAmountCents === null || rule.capPeriod === null) return null;
-  const group = rule.capGroup ?? `#${card.earnRules.indexOf(rule)}`;
+/** Cap bucket a capped rule's spend counts against in a month (one per cap group and period), and its cap. */
+export function capOf(
+  card: CreditCard,
+  rule: EarnRule,
+  month: number,
+): { key: string; capCents: number } | null {
+  const group = rule.capGroupId === null ? undefined : card.capGroups.find((g) => g.id === rule.capGroupId);
+  if (!group) return null;
   const period =
-    rule.capPeriod === "monthly" ? month : rule.capPeriod === "quarterly" ? Math.floor(month / 3) : 0;
-  return `${group}|${period}`;
+    group.capPeriod === "monthly" ? month : group.capPeriod === "quarterly" ? Math.floor(month / 3) : 0;
+  return { key: `${group.id}|${period}`, capCents: group.capAmountCents };
 }
 
 export function monthsOf(profile: SpendProfile): SpendProfile[] {
@@ -185,8 +186,8 @@ export function evaluateMonths(
   for (const [month, m] of months.entries()) {
     for (const c of CATEGORIES) {
       const rule = rules[month]?.[c];
-      const bucket = rule ? capBucket(card, rule, month) : null;
-      if (bucket) bucketSpend.set(bucket, (bucketSpend.get(bucket) ?? 0) + m[c]);
+      const cap = rule ? capOf(card, rule, month) : null;
+      if (cap) bucketSpend.set(cap.key, (bucketSpend.get(cap.key) ?? 0) + m[c]);
     }
   }
 
@@ -205,9 +206,9 @@ export function evaluateMonths(
         continue;
       }
       if (!earnRule || rule.multiplier > earnRule.multiplier) earnRule = rule;
-      const bucket = capBucket(card, rule, month);
-      const total = bucket ? (bucketSpend.get(bucket) ?? 0) : 0;
-      const ratio = bucket && total > (rule.capAmountCents ?? 0) ? (rule.capAmountCents ?? 0) / total : 1;
+      const cap = capOf(card, rule, month);
+      const total = cap ? (bucketSpend.get(cap.key) ?? 0) : 0;
+      const ratio = cap && total > cap.capCents ? cap.capCents / total : 1;
       const over = cell * (1 - ratio);
       aboveCap += over;
       points +=
@@ -331,11 +332,11 @@ export function capBreakpoints(
   for (let month = 0; month < 12; month++) {
     for (const c of CATEGORIES) {
       const rule = rules[month]?.[c];
-      const bucket = rule ? capBucket(card, rule, month) : null;
-      if (!rule || !bucket) continue;
-      cap.set(bucket, rule.capAmountCents ?? 0);
-      if (c === category) slope.set(bucket, (slope.get(bucket) ?? 0) + 1);
-      else base.set(bucket, (base.get(bucket) ?? 0) + rest[c]);
+      const bucket = rule ? capOf(card, rule, month) : null;
+      if (!bucket) continue;
+      cap.set(bucket.key, bucket.capCents);
+      if (c === category) slope.set(bucket.key, (slope.get(bucket.key) ?? 0) + 1);
+      else base.set(bucket.key, (base.get(bucket.key) ?? 0) + rest[c]);
     }
   }
   const points = new Set<number>();

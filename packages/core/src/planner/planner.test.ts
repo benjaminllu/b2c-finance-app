@@ -32,6 +32,8 @@ function cardOffer(id: string, value: number, minSpend: number, extra: Partial<B
     eligibleStates: null,
     earlyClosureFeeCents: 0,
     earlyClosureWindowDays: null,
+    hardPull: true,
+    bonusPostingDays: null,
     expiresAt: null,
     affiliateUrl: null,
     isAffiliate: false,
@@ -45,6 +47,7 @@ function bankOffer(id: string, value: number, dd: number, extra: Partial<BonusOf
     productType: "checking",
     cardId: null,
     depositProductId: id,
+    hardPull: false,
     requirements: {
       ...noReq,
       directDepositTotalCents: dd,

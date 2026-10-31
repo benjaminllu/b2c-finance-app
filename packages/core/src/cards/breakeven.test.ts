@@ -37,9 +37,8 @@ describe("breakEvenSpend", () => {
     const a = card({
       id: "five-capped",
       annualFeeCents: 9_500,
-      earnRules: [
-        rule({ category: "groceries", multiplier: 5, capAmountCents: 600_000, capPeriod: "annual" }),
-      ],
+      earnRules: [rule({ category: "groceries", multiplier: 5, capGroupId: "groceries" })],
+      capGroups: [{ id: "groceries", capAmountCents: 600_000, capPeriod: "annual" }],
     });
     // Below the cap (x <= 50,000): A = 0.6x - 9,500 vs B = 0.24x -> x = 9,500 / 0.36 = 26,388.89
     // Above: A = 30,000 + 0.12(x - 50,000) - 9,500 = 14,500 + 0.12x vs 0.24x -> x = 120,833.33

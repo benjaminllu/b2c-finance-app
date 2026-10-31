@@ -29,9 +29,7 @@ export const opts: ValuationOptions = { currencies: [usd, pts] };
 
 export function rule(r: Partial<EarnRule> & Pick<EarnRule, "category" | "multiplier">): EarnRule {
   return EarnRuleSchema.parse({
-    capAmountCents: null,
-    capPeriod: null,
-    capGroup: null,
+    capGroupId: null,
     afterCapMultiplier: null,
     rotating: false,
     activeQuarters: null,
@@ -51,6 +49,7 @@ export function card(c: Partial<CreditCard> & Pick<CreditCard, "id">): CreditCar
     rewardCurrencyId: "usd",
     baseMultiplier: 1,
     earnRules: [],
+    capGroups: [],
     credits: [],
     signupBonus: null,
     isBusiness: false,
@@ -77,7 +76,8 @@ export const flat2 = card({ id: "flat-2", baseMultiplier: 2 });
 export const groceryCapped = card({
   id: "grocery-capped",
   baseMultiplier: 1.5,
-  earnRules: [rule({ category: "groceries", multiplier: 3, capAmountCents: 600_000, capPeriod: "annual" })],
+  earnRules: [rule({ category: "groceries", multiplier: 3, capGroupId: "groceries" })],
+  capGroups: [{ id: "groceries", capAmountCents: 600_000, capPeriod: "annual" }],
 });
 
 /** Points card: 4x dining up to $1,500/quarter then 1x; 3x gas up to $500/month then 1x. */
@@ -85,14 +85,12 @@ export const quarterlyCapped = card({
   id: "quarterly-capped",
   rewardCurrencyId: "test-points",
   earnRules: [
-    rule({
-      category: "dining",
-      multiplier: 4,
-      capAmountCents: 150_000,
-      capPeriod: "quarterly",
-      afterCapMultiplier: 1,
-    }),
-    rule({ category: "gas", multiplier: 3, capAmountCents: 50_000, capPeriod: "monthly" }),
+    rule({ category: "dining", multiplier: 4, capGroupId: "dining", afterCapMultiplier: 1 }),
+    rule({ category: "gas", multiplier: 3, capGroupId: "gas" }),
+  ],
+  capGroups: [
+    { id: "dining", capAmountCents: 150_000, capPeriod: "quarterly" },
+    { id: "gas", capAmountCents: 50_000, capPeriod: "monthly" },
   ],
 });
 
@@ -104,9 +102,7 @@ export const rotating = card({
       rule({
         category,
         multiplier: 5,
-        capAmountCents: 150_000,
-        capPeriod: "quarterly",
-        capGroup: "rotating",
+        capGroupId: "rotating",
         rotating: true,
         activeQuarters: [1],
       }),
@@ -115,13 +111,12 @@ export const rotating = card({
       rule({
         category: "dining",
         multiplier: 5,
-        capAmountCents: 150_000,
-        capPeriod: "quarterly",
-        capGroup: "rotating",
+        capGroupId: "rotating",
         rotating: true,
         activeQuarters: [3],
       }),
     ),
+  capGroups: [{ id: "rotating", capAmountCents: 150_000, capPeriod: "quarterly" }],
 });
 
 /** $695 points card: 5x airfare, 5x hotels via portal only, three credits worth $660/yr. */

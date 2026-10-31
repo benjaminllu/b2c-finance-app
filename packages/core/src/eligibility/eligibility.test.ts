@@ -30,6 +30,8 @@ const offer = (o: Partial<BonusOffer> = {}): BonusOffer => ({
   eligibleStates: null,
   earlyClosureFeeCents: 0,
   earlyClosureWindowDays: null,
+  hardPull: false,
+  bonusPostingDays: null,
   expiresAt: null,
   affiliateUrl: null,
   isAffiliate: false,

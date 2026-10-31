@@ -10,7 +10,7 @@ export const saveBank = async (bank: Bank): Promise<void> => {
   await getPrisma().bank.upsert({ where: { id }, create: { id, ...data }, update: data });
 };
 
-/** Deleting a bank that still has products fails on the foreign key; delete its products first. */
+/** Cascades: also deletes the bank's products and their RateHistory. */
 export const deleteBank = async (id: string): Promise<void> => {
   await getPrisma().bank.delete({ where: { id } });
 };
@@ -60,7 +60,7 @@ export interface RateHistoryEntry {
 export const getRateHistory = async (productId: string): Promise<RateHistoryEntry[]> => {
   const rows = await getPrisma().rateHistory.findMany({
     where: { productId },
-    orderBy: { recordedAt: "desc" },
+    orderBy: [{ recordedAt: "desc" }, { id: "desc" }],
   });
   return rows.map((r) => ({
     id: r.id,

@@ -1,6 +1,6 @@
 import { seed } from "@optima/seed";
 import { afterAll, describe, expect, it } from "vitest";
-import { saveDepositProduct } from "./banking-admin";
+import { deleteBank, saveBank, saveDepositProduct } from "./banking-admin";
 import { getPrisma, hasDatabase } from "./index";
 import { createPrismaStore } from "./prisma-store";
 import { runSeed } from "./seed-logic";
@@ -34,5 +34,16 @@ describe.skipIf(!hasDatabase())("Prisma against Postgres", () => {
 
     await saveDepositProduct(product, "seed");
     await prisma.rateHistory.deleteMany({ where: { productId: product.id, source: "test" } });
+  });
+
+  it("deleting a bank deletes its products and their RateHistory", async () => {
+    const prisma = getPrisma();
+    const bank = { ...seed.banks[0]!, id: "test-cascade-bank" };
+    const product = { ...seed.depositProducts[0]!, id: "test-cascade-product", bankId: bank.id };
+    await saveBank(bank);
+    await saveDepositProduct(product, "test");
+    await deleteBank(bank.id);
+    expect(await prisma.depositProduct.count({ where: { id: product.id } })).toBe(0);
+    expect(await prisma.rateHistory.count({ where: { productId: product.id } })).toBe(0);
   });
 });

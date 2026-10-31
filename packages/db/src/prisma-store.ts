@@ -53,7 +53,7 @@ export function createPrismaStore(db: PrismaClient): DataStore {
       latestRateTiers: async (productId): Promise<ApyTier[] | null> => {
         const last = await db.rateHistory.findFirst({
           where: { productId },
-          orderBy: { recordedAt: "desc" },
+          orderBy: [{ recordedAt: "desc" }, { id: "desc" }],
         });
         return last ? z.array(ApyTierSchema).parse(last.apyTiers) : null;
       },

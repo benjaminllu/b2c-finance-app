@@ -59,6 +59,10 @@ export const BonusOfferSchema = z
     earlyClosureFeeCents: NonNegCentsSchema,
     /** Fee applies if closed within this many days of opening. */
     earlyClosureWindowDays: z.number().int().positive().nullable(),
+    /** Applying triggers a hard credit inquiry (most cards; some bank accounts). */
+    hardPull: z.boolean(),
+    /** Days after the requirements are met until the bonus posts; null = unknown. */
+    bonusPostingDays: z.number().int().nonnegative().nullable(),
     expiresAt: IsoDateSchema.nullable(),
   })
   .extend(ProvenanceSchema.shape)

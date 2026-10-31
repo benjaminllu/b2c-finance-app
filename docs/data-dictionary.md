@@ -51,28 +51,28 @@ valuationSourceUrl | null, isSample`. The UI shows `valuationSource` next to the
 
 ### CreditCard
 
-| Field                                    | Notes                                                       |
-| ---------------------------------------- | ----------------------------------------------------------- |
-| `network`                                | visa, mastercard, amex, discover                            |
-| `productFamily`                          | Groups siblings for family-wide bonus rules; null if none   |
-| `annualFeeCents`, `firstYearFeeWaived`   |                                                             |
-| `rewardCurrencyId`                       |                                                             |
-| `baseMultiplier`                         | Earn rate for any category without an earn rule             |
-| `earnRules[]`                            | See EarnRule                                                |
-| `credits[]`                              | See CardCredit                                              |
-| `signupBonus`                            | `{ amount, currencyId, minSpendCents, windowDays }` or null |
-| `isBusiness`, `foreignTransactionFeeBps` |                                                             |
+| Field                                    | Notes                                                         |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| `network`                                | visa, mastercard, amex, discover                              |
+| `productFamily`                          | Groups siblings for family-wide bonus rules; null if none     |
+| `annualFeeCents`, `firstYearFeeWaived`   |                                                               |
+| `rewardCurrencyId`                       |                                                               |
+| `baseMultiplier`                         | Earn rate for any category without an earn rule               |
+| `earnRules[]`                            | See EarnRule                                                  |
+| `capGroups[]`                            | `{ id, capAmountCents, capPeriod }`: spend caps; see EarnRule |
+| `credits[]`                              | See CardCredit                                                |
+| `signupBonus`                            | `{ amount, currencyId, minSpendCents, windowDays }` or null   |
+| `isBusiness`, `foreignTransactionFeeBps` |                                                               |
 
 ### EarnRule
 
-| Field                         | Notes                                                                                         |
-| ----------------------------- | --------------------------------------------------------------------------------------------- |
-| `category`, `multiplier`      |                                                                                               |
-| `capAmountCents`, `capPeriod` | Spend cap per monthly/quarterly/annual period. Both null = uncapped.                          |
-| `capGroup`                    | Rules with the same non-null group share one cap (e.g. a rotating 5% cap over two categories) |
-| `afterCapMultiplier`          | Earn rate after the cap; null = `baseMultiplier`                                              |
-| `rotating`, `activeQuarters`  | Rotating rules apply only in the listed quarters (1-4)                                        |
-| `portalOnly`                  | Only earned when booked through the issuer portal                                             |
+| Field                        | Notes                                                                                                                                                                                                     |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `category`, `multiplier`     |                                                                                                                                                                                                           |
+| `capGroupId`                 | The card's `capGroups` entry this rule counts against; null = uncapped. Rules with the same id share one cap (e.g. a rotating 5% cap over two categories); the card fails validation if the id is missing |
+| `afterCapMultiplier`         | Earn rate after the cap; null = `baseMultiplier`                                                                                                                                                          |
+| `rotating`, `activeQuarters` | Rotating rules apply only in the listed quarters (1-4)                                                                                                                                                    |
+| `portalOnly`                 | Only earned when booked through the issuer portal                                                                                                                                                         |
 
 ### CardCredit
 
@@ -110,6 +110,8 @@ DB only: `RateHistory` keeps one append-only row per rate change (`productId, ap
 | `monthlyFeeCents`, `monthlyFeeWaivedByRequirements` | For net-value math on deposit offers                                                                                      |
 | `eligibility`                                       | `lifetimeLimit`, `lookbackMonths`, `lookbackScope (product                                                                | product_family | institution)`, `notes[]` |
 | `eligibleStates`                                    | Two-letter codes, or null for nationwide (DB: empty array = nationwide)                                                   |
+| `hardPull`                                          | Applying triggers a hard credit inquiry                                                                                   |
+| `bonusPostingDays`                                  | Days after the requirements are met until the bonus posts; null = unknown                                                 |
 | `earlyClosureFeeCents`, `earlyClosureWindowDays`    |                                                                                                                           |
 | `expiresAt`                                         | null = no published end date. Expired offers are hidden.                                                                  |
 

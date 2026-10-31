@@ -46,6 +46,7 @@ model CreditCard {
   rewardCurrency           RewardCurrency @relation(fields: [rewardCurrencyId], references: [id])
   baseMultiplier           Float
   earnRules                Json // EarnRule[]
+  capGroups                Json // CapGroup[]; earn rules point at these by capGroupId
   credits                  Json // CardCredit[]
   signupBonus              Json? // SignupBonus | null
   isBusiness               Boolean
@@ -76,9 +77,9 @@ model Bank {
 }
 
 model DepositProduct {
-  id                         String       @id
+  id                         String        @id
   bankId                     String
-  bank                       Bank         @relation(fields: [bankId], references: [id])
+  bank                       Bank          @relation(fields: [bankId], references: [id], onDelete: Cascade)
   name                       String
   type                       String // checking | savings | money_market | cd
   apyTiers                   Json // ApyTier[], current rate; history in RateHistory
@@ -92,11 +93,11 @@ model DepositProduct {
   earlyWithdrawalPenaltyDays Int?
   sourceUrl                  String
   lastVerifiedAt             DateTime
-  isSample                   Boolean      @default(false)
+  isSample                   Boolean       @default(false)
   affiliateUrl               String?
-  isAffiliate                Boolean      @default(false)
-  createdAt                  DateTime     @default(now())
-  updatedAt                  DateTime     @updatedAt
+  isAffiliate                Boolean       @default(false)
+  createdAt                  DateTime      @default(now())
+  updatedAt                  DateTime      @updatedAt
   rateHistory                RateHistory[]
 
   @@index([bankId])
@@ -112,7 +113,8 @@ model RateHistory {
   recordedAt DateTime       @default(now())
   source     String // admin | seed | adapter id
 
-  @@index([productId, recordedAt])
+  // id breaks ties between rows recorded in the same millisecond.
+  @@index([productId, recordedAt, id])
 }
 
 model BonusOffer {
@@ -131,6 +133,8 @@ model BonusOffer {
   eligibleStates                 String[] // empty = nationwide
   earlyClosureFeeCents           Int
   earlyClosureWindowDays         Int?
+  hardPull                       Boolean
+  bonusPostingDays               Int?
   expiresAt                      DateTime? @db.Date
   sourceUrl                      String
   lastVerifiedAt                 DateTime

@@ -256,14 +256,20 @@ function ProductForm({ product, banks }: { product?: DepositProduct; banks: Bank
   );
 }
 
+const cascadeNote = (n: number) =>
+  n ? `its ${n} product${n === 1 ? "" : "s"} and their rate history` : undefined;
+
 function RowActions({
   id,
   verify,
   remove,
+  cascadeNote,
 }: {
   id: string;
   verify: (fd: FormData) => Promise<void>;
   remove: (fd: FormData) => Promise<void>;
+  /** What else the delete removes; when set, a required checkbox confirms it. */
+  cascadeNote?: string;
 }) {
   return (
     <div className="flex gap-2">
@@ -273,8 +279,13 @@ function RowActions({
           Mark verified now
         </Button>
       </form>
-      <form action={remove}>
+      <form action={remove} className="flex flex-wrap items-center gap-2">
         <input type="hidden" name="id" value={id} />
+        {cascadeNote && (
+          <label className="flex items-center gap-1 text-xs">
+            <input type="checkbox" required /> Also deletes {cascadeNote}
+          </label>
+        )}
         <Button type="submit" variant="destructive" size="sm">
           Delete
         </Button>
@@ -360,7 +371,12 @@ export default async function AdminBankingPage({
               <div className="mt-3 space-y-3">
                 <fieldset disabled={!db} className="space-y-3 disabled:opacity-60">
                   <BankForm bank={b} />
-                  <RowActions id={b.id} verify={verifyBankAction} remove={deleteBankAction} />
+                  <RowActions
+                    id={b.id}
+                    verify={verifyBankAction}
+                    remove={deleteBankAction}
+                    cascadeNote={cascadeNote(products.filter((p) => p.bankId === b.id).length)}
+                  />
                 </fieldset>
               </div>
             </details>

@@ -37,6 +37,8 @@ const mk = (o: Partial<BonusOffer>): BonusOffer => ({
   eligibleStates: null,
   earlyClosureFeeCents: 0,
   earlyClosureWindowDays: null,
+  hardPull: false,
+  bonusPostingDays: null,
   expiresAt: null,
   sourceUrl: "https://example.com",
   lastVerifiedAt: "2026-10-30T00:00:00Z",

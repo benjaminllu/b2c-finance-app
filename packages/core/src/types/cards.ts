@@ -34,16 +34,22 @@ export type CapPeriod = z.infer<typeof CapPeriodSchema>;
 export const QuarterSchema = z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]);
 export type Quarter = z.infer<typeof QuarterSchema>;
 
+/** One spend cap, shared by every earn rule on the card that points at it. */
+export const CapGroupSchema = z.object({
+  id: IdSchema,
+  /** Spend (not rewards) cap in cents per capPeriod. */
+  capAmountCents: NonNegCentsSchema,
+  capPeriod: CapPeriodSchema,
+});
+export type CapGroup = z.infer<typeof CapGroupSchema>;
+
 export const EarnRuleSchema = z
   .object({
     category: CategorySchema,
     /** Units of the card's reward currency per dollar spent. */
     multiplier: z.number().nonnegative(),
-    /** Spend (not rewards) cap in cents per capPeriod; null = uncapped. */
-    capAmountCents: NonNegCentsSchema.nullable(),
-    capPeriod: CapPeriodSchema.nullable(),
-    /** Rules sharing a capGroup share one cap (e.g. a rotating 5% cap across two categories). */
-    capGroup: z.string().nullable(),
+    /** The card's capGroups entry this rule's spend counts against; null = uncapped. */
+    capGroupId: IdSchema.nullable(),
     /** Multiplier after the cap is hit; null = the card's baseMultiplier. */
     afterCapMultiplier: z.number().nonnegative().nullable(),
     /** Rotating categories only apply in activeQuarters. */
@@ -51,9 +57,6 @@ export const EarnRuleSchema = z
     activeQuarters: z.array(QuarterSchema).nullable(),
     /** Only earned when booking through the issuer's portal. */
     portalOnly: z.boolean(),
-  })
-  .refine((r) => (r.capAmountCents === null) === (r.capPeriod === null), {
-    message: "capAmountCents and capPeriod must both be set or both be null",
   })
   .refine((r) => !r.rotating || (r.activeQuarters?.length ?? 0) > 0, {
     message: "rotating rules need activeQuarters",
@@ -98,11 +101,25 @@ export const CreditCardSchema = z
     /** Multiplier for any category without an earn rule. */
     baseMultiplier: z.number().nonnegative(),
     earnRules: z.array(EarnRuleSchema),
+    capGroups: z.array(CapGroupSchema),
     credits: z.array(CardCreditSchema),
     signupBonus: SignupBonusSchema.nullable(),
     isBusiness: z.boolean(),
     foreignTransactionFeeBps: BpsSchema,
   })
   .extend(ProvenanceSchema.shape)
-  .extend(AffiliateSchema.shape);
+  .extend(AffiliateSchema.shape)
+  .superRefine((c, ctx) => {
+    const ids = new Set(c.capGroups.map((g) => g.id));
+    if (ids.size !== c.capGroups.length)
+      ctx.addIssue({ code: "custom", path: ["capGroups"], message: "capGroups ids must be unique" });
+    c.earnRules.forEach((r, i) => {
+      if (r.capGroupId !== null && !ids.has(r.capGroupId))
+        ctx.addIssue({
+          code: "custom",
+          path: ["earnRules", i, "capGroupId"],
+          message: `no capGroups entry "${r.capGroupId}"`,
+        });
+    });
+  });
 export type CreditCard = z.infer<typeof CreditCardSchema>;

@@ -25,6 +25,7 @@ export function flatRateCard(options: FlatRateCardOptions = {}): CreditCard {
     rewardCurrencyId: options.rewardCurrencyId ?? "usd",
     baseMultiplier: multiplier,
     earnRules: [],
+    capGroups: [],
     credits: [],
     signupBonus: null,
     isBusiness: false,

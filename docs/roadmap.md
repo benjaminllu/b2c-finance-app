@@ -38,6 +38,4 @@ a Postgres migrate + seed + db-test job, and e2e on the pinned Chromium.
   soft pull, and bonus posting delays as data (`bonusPostingDays`).
 - **Ingestion**: let a source confirming an unchanged rate refresh `lastVerifiedAt` (with provenance), and
   add retries and batching.
-- **Schema tweaks**: a `RateHistory` tie-breaker index, `onDelete: Cascade` from Bank to DepositProduct,
-  per-card cap groups instead of repeating caps on each earn rule.
 - **Observability**: error tracking and privacy-respecting product analytics (no personal data).

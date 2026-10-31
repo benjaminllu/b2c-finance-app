@@ -75,6 +75,8 @@ export async function saveOfferAction(fd: FormData) {
       : null,
     earlyClosureFeeCents: Number(text(fd, "earlyClosureFeeCents") || 0),
     earlyClosureWindowDays: numOrNull(fd, "earlyClosureWindowDays"),
+    hardPull: flag(fd, "hardPull"),
+    bonusPostingDays: numOrNull(fd, "bonusPostingDays"),
     expiresAt: textOrNull(fd, "expiresAt"),
     sourceUrl: text(fd, "sourceUrl"),
     lastVerifiedAt: text(fd, "lastVerifiedAt") || new Date().toISOString(),

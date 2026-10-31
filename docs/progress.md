@@ -37,20 +37,26 @@ Resume rule: read this file and `git log`, continue from the last completed chec
   unchanged save appended a RateHistory row. Now uses `jsonEqual`. Covered by `packages/db/src/prisma.db.test.ts`
   (skipped unless DATABASE_URL is set; runs in the CI db job).
 - e2e pins `DATABASE_URL=""` so it always runs in seed mode, even with a local `.env`.
-- CI: `.github/workflows/ci.yml` has `check`, `db` (Postgres service) and `e2e` (pinned Chromium) jobs. Not yet run on
-  GitHub: there is no remote.
-- Next: step 3 (schema changes and a new migration).
+- CI: `.github/workflows/ci.yml` has `check`, `db` (Postgres service) and `e2e` (pinned Chromium) jobs. First run on
+  GitHub (commit 6fd0895) passed.
+- Step 3 done (migration `20261031074004_cap_groups_offer_pull_cascade`): card-level `capGroups` with
+  `EarnRule.capGroupId` (validated; replaces per-rule capAmountCents/capPeriod/capGroup and the engine's
+  "same cap" shortcut); offer `hardPull` + `bonusPostingDays`; Bank -> DepositProduct cascade (admin delete
+  needs a confirm checkbox when products exist); RateHistory (productId, recordedAt, id) index + id tie-break.
+  The migration backfills old rows; checked on a DB loaded with the pre-migration seed (all 15 cards match
+  the converted seed JSON). Seed hardPull = productType is credit_card; bonusPostingDays null (unknown).
+- Data question for the owner: Marriott Bonvoy Boundless sample rules cap groceries, gas and dining at
+  $6,000 each; the real card may share one cap. Converted as-is.
+- Next: step 4 (planner reads hardPull, bonusPostingDays, directDepositCount, eligibleStates).
 
 ## Open issues / decisions to review
 
-- Deleting a bank that still has products surfaces Prisma's raw FK error in the admin banner (step 3 adds cascade).
 - Local e2e still uses PW_CHROMIUM_PATH: on the dev machine a `playwright install chromium` started at
-  2026-10-30 14:52 hung and holds `%LOCALAPPDATA%\ms-playwright\__dirlock`; kill it to install the pinned build.
+  2026-10-30 14:52 hung. Downloads from this machine stall; installing chromium-headless-shell also garbage-
+  collected chromium-1193. Use PW_CHROMIUM_PATH=chromium-1234 locally; CI installs the pinned build fine.
 - Resolved: offer net value has one implementation (`offerNetValue`); the planner adapts it.
 - Card engine defaults: credit utilization 0; first-year view counts unreachable bonuses (flagged).
 - Banking: deposits use compounded effective APY, bonuses simple annualization; ranking sorts by net dollars.
 - Offers ROI for cards = net / required spend (sorting only).
 - Planner ignores directDepositCount and eligibleStates; bank accounts treated as soft pulls.
 - Ingest: unchanged rates do not bump lastVerifiedAt; adapters opt-in via INGEST_ADAPTERS.
-- Schema suggestions (not applied): RateHistory tie-breaker index; Bank -> DepositProduct onDelete cascade;
-  per-card cap groups; offer `hardPull` and `bonusPostingDays`.

@@ -27,9 +27,8 @@ describe("sensitivity", () => {
     const a = card({
       id: "five-capped",
       annualFeeCents: 9_500,
-      earnRules: [
-        rule({ category: "groceries", multiplier: 5, capAmountCents: 600_000, capPeriod: "annual" }),
-      ],
+      earnRules: [rule({ category: "groceries", multiplier: 5, capGroupId: "groceries" })],
+      capGroups: [{ id: "groceries", capAmountCents: 600_000, capPeriod: "annual" }],
     });
     const r = sensitivity(
       [a, flat2],

@@ -7,9 +7,8 @@ describe("optimizeWallet", () => {
     const capped = card({
       id: "six-capped",
       annualFeeCents: 9_500,
-      earnRules: [
-        rule({ category: "groceries", multiplier: 6, capAmountCents: 600_000, capPeriod: "annual" }),
-      ],
+      earnRules: [rule({ category: "groceries", multiplier: 6, capGroupId: "groceries" })],
+      capGroups: [{ id: "groceries", capAmountCents: 600_000, capPeriod: "annual" }],
     });
     const r = optimizeWallet([capped, flat2], spend({ groceries: 1000, other: 500 }), opts);
     // Jan-Jun groceries go to the 6% card until its $6,000 cap is used; Jul-Dec overflow to 2% (beats 1%).
