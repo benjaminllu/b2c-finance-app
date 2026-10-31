@@ -34,6 +34,6 @@ a Postgres migrate + seed + db-test job, and e2e on the pinned Chromium.
 - **Anniversary-aware card year** in the card engine (today the first card year is modelled as a calendar year).
 - **Exact break-even chart sampling**: export cap breakpoints from `@optima/core/cards` so charts sample at
   every kink.
-- **Ingestion**: let a source confirming an unchanged rate refresh `lastVerifiedAt` (with provenance), and
-  add retries and batching.
+- **Ingestion**: batch writes, and store per-record provenance ("verified by") if the IngestRun log is not
+  enough. Done: unchanged records refresh `lastVerifiedAt`; fetches retry.
 - **Observability**: error tracking and privacy-respecting product analytics (no personal data).

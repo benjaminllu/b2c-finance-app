@@ -58,6 +58,21 @@ test.describe("/cards", () => {
     await expect(page.getByRole("heading", { name: /^Winner:/ })).toBeVisible();
   });
 
+  test("highlights the winning card first and updates it as cards change", async ({ page }) => {
+    await page.goto("/cards?c=chase-sapphire-preferred,citi-double-cash");
+    const winner = page.getByRole("heading", { name: /^Winner:/ });
+    const pickName = async () => {
+      const first = page.locator(".ring-2").first();
+      await expect(first.getByText("Our pick for your spending")).toBeVisible();
+      return first.innerText();
+    };
+    const name = (t: string) => (t.match(/Winner: (.+?)\s*Best of/)?.[1] ?? "").trim();
+    expect(await pickName()).toContain(name(await winner.innerText()));
+    await page.getByRole("list", { name: "Cards" }).getByText("Chase Freedom Unlimited").click();
+    await expect(winner).toContainText("Chase Freedom Unlimited");
+    expect(await pickName()).toContain("Chase Freedom Unlimited");
+  });
+
   test("picker filters and sorts", async ({ page }) => {
     await page.goto("/cards");
     const items = page.getByRole("list", { name: "Cards" }).getByRole("listitem");

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -200,7 +201,7 @@ export function CardPicker({
             </div>
           )}
         </div>
-        <ul className="grid max-h-80 gap-1 overflow-y-auto sm:grid-cols-2" aria-label="Cards">
+        <ul className="grid max-h-80 gap-1 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3" aria-label="Cards">
           {shown.map(({ card: c, catchAllCents, bonusCents, valueCents }) => {
             const on = selected.includes(c.id);
             return (
@@ -241,12 +242,15 @@ export function CompareColumns({
   issuers,
   currencies,
   now,
+  winner,
   onRemove,
 }: {
+  /** Shown in this order; the winner, when there is one, should come first. */
   cards: CreditCard[];
   issuers: Map<string, Issuer>;
   currencies: Map<string, RewardCurrency>;
   now: Date;
+  winner: { cardId: string; marginCents: number } | null;
   onRemove: (id: string) => void;
 }) {
   return (
@@ -254,9 +258,16 @@ export function CompareColumns({
       {cards.map((c) => {
         const cur = currencies.get(c.rewardCurrencyId);
         const bonusCur = c.signupBonus && currencies.get(c.signupBonus.currencyId);
+        const top = winner?.cardId === c.id;
         return (
-          <Card key={c.id}>
+          <Card key={c.id} className={top ? "border-primary ring-2 ring-primary" : undefined}>
             <CardHeader>
+              {top && (
+                <Badge className="w-fit">
+                  Our pick for your spending
+                  {winner.marginCents > 0 ? `: +${formatCentsWhole(winner.marginCents)}/yr` : ""}
+                </Badge>
+              )}
               <CardTitle className="leading-snug">{c.name}</CardTitle>
               <CardDescription>
                 {issuers.get(c.issuerId)?.name} - earns {cur?.name ?? c.rewardCurrencyId}

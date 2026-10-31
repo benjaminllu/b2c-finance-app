@@ -45,8 +45,6 @@ Resume rule: read this file and `git log`, continue from the last completed chec
   needs a confirm checkbox when products exist); RateHistory (productId, recordedAt, id) index + id tie-break.
   The migration backfills old rows; checked on a DB loaded with the pre-migration seed (all 15 cards match
   the converted seed JSON). Seed hardPull = productType is credit_card; bonusPostingDays null (unknown).
-- Data question for the owner: Marriott Bonvoy Boundless sample rules cap groceries, gas and dining at
-  $6,000 each; the real card may share one cap. Converted as-is.
 - Owner request: `/cards` picker filters (search, issuer, annual fee, catch-all rate, rewards kind, network,
   personal/business, has bonus, no FX fee) and sorts (value for your spending, fee, catch-all, bonus, name).
   Catch-all and bonus are valued at the user's cents-per-point; logic in `components/cards/picker.ts` (tested).
@@ -56,9 +54,26 @@ Resume rule: read this file and `git log`, continue from the last completed chec
   `directDepositCount`-only requirement takes a DD split; `/planner` has a state input (`st` in the URL) that
   skips offers outside `eligibleStates`, and flags them when no state is set. `offerNetValue` keeps deposit
   accounts open until the bonus posts, so monthly fees cover the posting wait. `US_STATES` now lives in core.
-- Next: step 5 (ingestion: unchanged rates refresh lastVerifiedAt with provenance; retries).
+- Step 5 done: ingestion moves `lastVerifiedAt` forward (never back) when a source confirms an unchanged
+  record, for rates and for whole records (cards, offers, deposit products). Provenance is the IngestRun
+  log line `verified <id> ... as of <date>` (the run row names the adapter). `runIngest` retries the fetch
+  (3 attempts, 1s/2s backoff; writes are not retried) and reports a `verified` count, also in the cron JSON.
+- Owner request: `/cards` picker in 3 columns on wide screens; the compare columns are ordered by value with
+  the winner first, outlined and badged "Our pick for your spending" (updates as cards are added/removed).
+- Next: step 6 (verified data) is the owner's job; then step 7 (sign-in with Auth.js), step 8 (roadmap).
 
 ## Open issues / decisions to review
+
+Everything outstanding lives here. Owner action items first.
+
+- Owner: every record is still `isSample: true`; step 6 (replace with verified data) is the owner's job.
+  When verifying offers, also fill `bonusPostingDays` (all null) and check `hardPull` (seeded as "cards are
+  hard pulls, bank accounts soft").
+- Owner: Marriott Bonvoy Boundless sample rules cap groceries, gas and dining at $6,000 each; the real card
+  may share one cap. Converted as-is.
+- Owner: CI status of pushes after 6fd0895 not checked from the dev machine (no `gh` CLI); see GitHub Actions.
+- Dev machine: local Postgres is embedded-postgres; `optima_v2` is the active DB (`optima` has a stale
+  migration checksum from before the step 3 migration was edited; drop it or `migrate reset` with consent).
 
 - Local e2e still uses PW_CHROMIUM_PATH: on the dev machine a `playwright install chromium` started at
   2026-10-30 14:52 hung. Downloads from this machine stall; installing chromium-headless-shell also garbage-
@@ -69,4 +84,7 @@ Resume rule: read this file and `git log`, continue from the last completed chec
 - Offers ROI for cards = net / required spend (sorting only).
 - Planner: DD count only reserves a split (no per-deposit amount or pay-frequency check); unknown posting
   delay counts as 0 days.
-- Ingest: unchanged rates do not bump lastVerifiedAt; adapters opt-in via INGEST_ADAPTERS.
+- Ingest: adapters opt-in via INGEST_ADAPTERS. Re-verification provenance is only in the IngestRun log (no
+  per-record "verified by" field); a feed re-verifying a sample record does not clear `isSample`. Batching
+  (roadmap) not done; writes are one record at a time.
+- `/cards` picker filters and sort are not in the URL (card choices and inputs are).
